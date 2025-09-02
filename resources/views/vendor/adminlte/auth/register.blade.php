@@ -92,6 +92,27 @@
             @enderror
         </div>
 
+        {{-- Terms and conditions field --}}
+        @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
+        <div class="form-check mb-3">
+            <input class="form-check-input @error('terms') is-invalid @enderror" 
+                type="checkbox" name="terms" id="terms" value="1" {{ old('terms') ? 'checked' : '' }}>
+            
+            <label class="form-check-label" for="terms">
+                {!! __('I agree to the :terms_of_service and :privacy_policy', [
+                    'terms_of_service' => '<a target="_blank" href="'.route('terms.show').'" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">'.__('Terms of Service').'</a>',
+                    'privacy_policy' => '<a target="_blank" href="'.route('policy.show').'" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">'.__('Privacy Policy').'</a>',
+                ]) !!}
+            </label>
+
+            @error('terms')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
+        </div>
+        @endif
+
         {{-- Register button --}}
         <button type="submit" class="btn btn-block {{ config('adminlte.classes_auth_btn', 'btn-flat btn-primary') }}">
             <span class="fas fa-user"></span>

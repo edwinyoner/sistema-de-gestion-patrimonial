@@ -35,6 +35,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Rutas públicas
+Route::view('/terms', 'terms')->name('terms.show');
+Route::view('/policy', 'policy')->name('policy.show');
+
+// Rutas protegidas
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('job-positions', JobPositionController::class)->names('job_positions');

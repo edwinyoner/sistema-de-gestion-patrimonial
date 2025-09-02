@@ -37,7 +37,7 @@ return new class extends Migration
             $table->timestamps();
 
             // Índices opcionales para mejorar rendimiento
-            $table->index('status');
+            //$table->index('status');
         });
     }
 
