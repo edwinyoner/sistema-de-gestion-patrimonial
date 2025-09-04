@@ -45,7 +45,7 @@ class NewUserCredentials extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.new_user_credentials',
+            view: 'emails.new-user-credentials',
         );
     }
 

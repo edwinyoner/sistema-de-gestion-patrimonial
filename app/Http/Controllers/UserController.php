@@ -6,9 +6,6 @@ use App\Models\User;
 use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\NewUserCredentials; // Añadir cuando lo creemos
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -38,17 +35,14 @@ class UserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($password),
             'force_password_change' => true,
-            'status' => $request->status ?? true, // Tomado del request, por defecto true
+            'status' => $request->status ?? true,
         ]);
 
         if ($request->has('role')) {
             $user->assignRole($request->role);
         }
 
-        // Enviar correo con credenciales
-        Mail::to($user->email)->send(new NewUserCredentials($user, $password, url('/login')));
-
-        return response()->json(['success' => true, 'message' => 'Usuario creado. Credenciales enviadas.']);
+        return response()->json(['success' => true, 'message' => 'Usuario creado.']);
     }
 
     public function show(User $user)
@@ -67,7 +61,7 @@ class UserController extends Controller
         $user->update([
             'name' => $request->name,
             'email' => $request->email,
-            'status' => $request->status, // Actualiza el estado
+            'status' => $request->status,
         ]);
 
         if ($request->has('role')) {
@@ -94,7 +88,7 @@ class UserController extends Controller
 
         $user = User::where('email', $request->email)->first();
         if ($user) {
-            Mail::to($user->email)->send(new NewUserCredentials($user, $request->password, $request->login_url));
+            \Illuminate\Support\Facades\Mail::to($user->email)->send(new \App\Mail\NewUserCredentials($user, $request->password, $request->login_url));
             return response()->json(['success' => true]);
         }
 
