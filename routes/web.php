@@ -20,16 +20,6 @@ use App\Http\Controllers\AssetOtherController;
 use App\Http\Controllers\SoftwareTypeController;
 use App\Http\Controllers\DashboardController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
 
 Route::get('/', function () {
     return view('welcome');
@@ -63,4 +53,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::resource('roles', RoleController::class)->names('roles');
     Route::resource('permissions', PermissionController::class)->names('permissions');
     Route::post('/users/{userId}/assign-role', [UserController::class, 'assignRole'])->name('users.assignRole');
+
+    // En routes/web.php
+    Route::post('/send-credentials', [UserController::class, 'sendCredentials'])->name('users.send-credentials');
 });

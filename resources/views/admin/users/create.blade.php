@@ -26,11 +26,11 @@
         </x-adminlte-alert>
     @endif
 
-    {{-- Formulario centrado y estilizado --}}
+    {{-- Formulario en dos columnas --}}
     <div class="row justify-content-center">
-        <div class="col-md-6 col-lg-5">
+        <div class="col-md-6">
             <x-adminlte-card title="Crear Nuevo Usuario" theme="info" icon="fas fa-user" collapsible>
-                <form method="POST" action="{{ route('users.store') }}">
+                <form method="POST" action="{{ route('users.store') }}" id="userForm">
                     @csrf
 
                     {{-- Nombre --}}
@@ -53,10 +53,16 @@
                         </x-slot>
                     </x-adminlte-input>
 
-                    {{-- Contraseña Inicial (generada automáticamente) --}}
+                    {{-- Contraseña Inicial (generada aleatoriamente) --}}
+                    <?php $generatedPassword = \Illuminate\Support\Str::random(12); ?>
                     <x-adminlte-input name="password" label="Contraseña Inicial" type="text"
-                        value="{{ \Illuminate\Support\Str::random(12) }}" readonly label-class="text-lightblue">
+                        value="{{ $generatedPassword }}" readonly label-class="text-lightblue">
                         <small class="text-muted">La contraseña será enviada al usuario y deberá cambiarla al iniciar sesión.</small>
+                        <x-slot name="prependSlot">
+                            <div class="input-group-text bg-info">
+                                <i class="fas fa-lock text-white"></i>
+                            </div>
+                        </x-slot>
                     </x-adminlte-input>
 
                     <x-adminlte-select name="role" label="Rol" label-class="text-lightblue" required>
@@ -73,18 +79,27 @@
                         @endforeach
                     </x-adminlte-select>
 
-                    {{-- Botones --}}
-                    <div class="d-flex justify-content-between mt-4">
-                        {{-- Botón Volver --}}
-                        <a href="{{ route('users.index') }}" class="btn btn-secondary btn-sm">
-                            <i class="fas fa-arrow-left mr-1"></i> Volver
-                        </a>
-
-                        {{-- Botón Guardar --}}
+                    {{-- Botón Guardar --}}
+                    <div class="d-flex justify-content-end mt-4">
                         <x-adminlte-button class="btn-sm" type="submit" label="Guardar" theme="success"
-                            icon="fas fa-save" />
+                            icon="fas fa-save" id="saveButton" />
                     </div>
                 </form>
+            </x-adminlte-card>
+        </div>
+
+        <div class="col-md-6">
+            <x-adminlte-card title="Credenciales Generadas" theme="info" icon="fas fa-key" collapsible>
+                <div id="credentialsSection" style="display: none;">
+                    <p><strong>Nombre:</strong> <span id="generatedName"></span></p>
+                    <p><strong>Correo:</strong> <span id="generatedEmail"></span></p>
+                    <p><strong>Contraseña Inicial:</strong> <span id="generatedPassword"></span></p>
+                    <p><strong>Link del Sistema:</strong> <a href="{{ url('/login') }}" target="_blank">{{ url('/login') }}</a></p>
+                    <p><small>El usuario deberá usar estas credenciales para iniciar sesión y cambiar la contraseña.</small></p>
+                    <x-adminlte-button class="btn-sm mt-2" label="Enviar Credenciales" theme="primary" icon="fas fa-paper-plane"
+                        id="sendCredentials" disabled />
+                </div>
+                <p id="noCredentials" class="text-muted">Guarda el usuario para generar y ver las credenciales.</p>
             </x-adminlte-card>
         </div>
     </div>
@@ -126,6 +141,111 @@
                     successAlert.style.display = 'none';
                 }, 3000); // 3 segundos
             }
+        });
+
+        // Manejar el envío del formulario y mostrar credenciales
+        document.getElementById('userForm').addEventListener('submit', function (e) {
+            e.preventDefault(); // Prevenir envío inmediato
+
+            const formData = new FormData(this);
+            const generatedPassword = document.querySelector('input[name="password"]').value; // Usar la contraseña generada
+
+            // Mostrar credenciales después de guardar
+            document.getElementById('generatedName').textContent = document.querySelector('input[name="name"]').value;
+            document.getElementById('generatedEmail').textContent = document.querySelector('input[name="email"]').value;
+            document.getElementById('generatedPassword').textContent = generatedPassword;
+            document.getElementById('credentialsSection').style.display = 'block';
+            document.getElementById('noCredentials').style.display = 'none';
+            document.getElementById('sendCredentials').disabled = false;
+
+            // Enviar formulario al servidor
+            fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Éxito',
+                        text: data.success,
+                        timer: 3000,
+                        showConfirmButton: false
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: data.error || 'Ocurrió un error al guardar.',
+                        timer: 3000,
+                        showConfirmButton: false
+                    });
+                }
+            })
+            .catch(error => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Ocurrió un error al procesar la solicitud.',
+                    timer: 3000,
+                    showConfirmButton: false
+                });
+            });
+        });
+
+        // Enviar credenciales por correo
+        document.getElementById('sendCredentials').addEventListener('click', function () {
+            const name = document.getElementById('generatedName').textContent;
+            const email = document.getElementById('generatedEmail').textContent;
+            const password = document.getElementById('generatedPassword').textContent;
+
+            fetch('/send-credentials', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    name: name,
+                    email: email,
+                    password: password,
+                    login_url: '{{ url('/login') }}' // Incluir link del sistema
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Enviado',
+                        text: 'Credenciales enviadas con éxito.',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                    this.disabled = true;
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: data.error || 'No se pudo enviar las credenciales.',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                }
+            })
+            .catch(error => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Ocurrió un error al enviar las credenciales.',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            });
         });
     </script>
 @endpush
