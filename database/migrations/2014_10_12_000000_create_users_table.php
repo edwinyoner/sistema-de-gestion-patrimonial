@@ -17,7 +17,7 @@ return new class extends Migration
             $table->rememberToken()->comment('Token para recordar la sesión del usuario');
             $table->foreignId('current_team_id')->nullable()->comment('ID del equipo actual del usuario');
             $table->string('profile_photo_path', 2048)->nullable()->comment('Ruta de la foto de perfil del usuario, nullable si no tiene foto de perfil');
-            $table->boolean('force_password_change')->default(true)->comment('Indica si el usuario debe cambiar la contraseña al primer inicio');
+            //$table->boolean('force_password_change')->default(true)->comment('Indica si el usuario debe cambiar la contraseña al primer inicio');
             $table->boolean('status')->default(true)->comment('Estado del usuario: true (activo), false (inactivo)');
             $table->softDeletes()->comment('Fecha de eliminación lógica para soft deletes');
             $table->timestamps();

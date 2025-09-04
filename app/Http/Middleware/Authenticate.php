@@ -2,9 +2,9 @@
 
 namespace App\Http\Middleware;
 
+use Closure;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 use Illuminate\Http\Request;
-use Closure;
 
 class Authenticate extends Middleware
 {
@@ -15,17 +15,30 @@ class Authenticate extends Middleware
     {
         return $request->expectsJson() ? null : route('login');
     }
-    
+
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @param  string[]  ...$guards
+     * @return mixed
+     */
     public function handle($request, Closure $next, ...$guards)
     {
         $this->authenticate($request, $guards);
 
-        if (auth()->check() && !auth()->user()->status) {
-            auth()->logout();
-            return redirect('/login')->withErrors(['email' => 'Tu cuenta está inactiva.']);
+        // Verificar si el usuario está autenticado
+        if (auth()->check()) {
+            $user = auth()->user();
+
+            // Verificar si la cuenta está inactiva
+            if (!$user->status) {
+                auth()->logout();
+                return redirect('/login')->withErrors(['email' => 'Tu cuenta está inactiva.']);
+            }
         }
 
         return $next($request);
     }
-
 }

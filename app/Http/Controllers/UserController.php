@@ -34,7 +34,7 @@ class UserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($password),
-            'force_password_change' => true,
+            // 'force_password_change' => true, // Comentado para futuras versiones
             'status' => $request->status ?? true,
         ]);
 

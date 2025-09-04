@@ -15,19 +15,15 @@
         </x-adminlte-alert>
     @endif
 
-    {{-- Validación de errores --}}
-    @if ($errors->any())
+    {{-- Alertas de errores de validación (dinámicas desde JS) --}}
+    <div id="validation-alert" style="display: none;">
         <x-adminlte-alert theme="danger" id="error-alert" title="Errores" dismissable>
-            <ul class="mb-0">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+            <ul id="error-list" class="mb-0"></ul>
         </x-adminlte-alert>
-    @endif
+    </div>
 
     {{-- Formulario en dos columnas --}}
-    <div class="row justify-content-center">
+    <div class="row justify-content-center equal-height-cards">
         <div class="col-md-6">
             <x-adminlte-card title="Crear Nuevo Usuario" theme="info" icon="fas fa-user" collapsible>
                 <form method="POST" action="{{ route('users.store') }}" id="userForm">
@@ -57,7 +53,7 @@
                     <?php $generatedPassword = \Illuminate\Support\Str::random(12); ?>
                     <x-adminlte-input name="password" label="Contraseña Inicial" type="text"
                         value="{{ $generatedPassword }}" readonly label-class="text-lightblue">
-                        <small class="text-muted">La contraseña será enviada al usuario y deberá cambiarla al iniciar sesión.</small>
+                        <small class="text-muted">La contraseña será enviada al usuario.</small>
                         <x-slot name="prependSlot">
                             <div class="input-group-text bg-info">
                                 <i class="fas fa-lock text-white"></i>
@@ -95,7 +91,7 @@
                     <p><strong>Correo:</strong> <span id="generatedEmail"></span></p>
                     <p><strong>Contraseña Inicial:</strong> <span id="generatedPassword"></span></p>
                     <p><strong>Link del Sistema:</strong> <a href="{{ url('/login') }}" target="_blank">{{ url('/login') }}</a></p>
-                    <p><small>El usuario deberá usar estas credenciales para iniciar sesión y cambiar la contraseña.</small></p>
+                    <p><small>El usuario podrá usar estas credenciales para iniciar sesión.</small></p>
                     <x-adminlte-button class="btn-sm mt-2" label="Enviar Credenciales" theme="primary" icon="fas fa-paper-plane"
                         id="sendCredentials" disabled />
                 </div>
@@ -119,6 +115,28 @@
 
         .uppercase-input {
             text-transform: uppercase;
+        }
+
+        .equal-height-cards .col-md-6 {
+            display: flex;
+        }
+
+        .equal-height-cards .card {
+            flex: 1 1 auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .equal-height-cards .card-body {
+            flex-grow: 1;
+        }
+
+        #validation-alert {
+            transition: opacity 0.5s ease;
+        }
+
+        #validation-alert[style*="display: none"] {
+            opacity: 0;
         }
     </style>
 @endpush
@@ -147,10 +165,14 @@
         document.getElementById('userForm').addEventListener('submit', function (e) {
             e.preventDefault(); // Prevenir envío inmediato
 
-            const formData = new FormData(this);
-            const generatedPassword = document.querySelector('input[name="password"]').value; // Usar la contraseña generada
+            const saveButton = document.getElementById('saveButton');
+            saveButton.disabled = true;
+            saveButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
 
-            // Mostrar credenciales después de guardar
+            const formData = new FormData(this);
+            const generatedPassword = document.querySelector('input[name="password"]').value;
+
+            // Mostrar credenciales inmediatamente
             document.getElementById('generatedName').textContent = document.querySelector('input[name="name"]').value;
             document.getElementById('generatedEmail').textContent = document.querySelector('input[name="email"]').value;
             document.getElementById('generatedPassword').textContent = generatedPassword;
@@ -166,39 +188,66 @@
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 }
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(errors => {
+                        throw { status: response.status, errors: errors };
+                    });
+                }
+                return response.json();
+            })
             .then(data => {
                 if (data.success) {
                     Swal.fire({
                         icon: 'success',
                         title: 'Éxito',
-                        text: data.success,
-                        timer: 3000,
-                        showConfirmButton: false
-                    });
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: data.error || 'Ocurrió un error al guardar.',
+                        text: data.message || 'Usuario creado correctamente.',
                         timer: 3000,
                         showConfirmButton: false
                     });
                 }
             })
             .catch(error => {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Ocurrió un error al procesar la solicitud.',
-                    timer: 3000,
-                    showConfirmButton: false
-                });
+                if (error.status === 422) {
+                    const errorList = document.getElementById('error-list');
+                    errorList.innerHTML = '';
+                    Object.values(error.errors).forEach(errorMessages => {
+                        errorMessages.forEach(message => {
+                            const li = document.createElement('li');
+                            li.textContent = message;
+                            errorList.appendChild(li);
+                        });
+                    });
+                    document.getElementById('validation-alert').style.display = 'block';
+                    setTimeout(() => {
+                        document.getElementById('validation-alert').style.display = 'none';
+                    }, 5000);
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: error.message || 'Ocurrió un error al procesar la solicitud.',
+                        timer: 3000,
+                        showConfirmButton: false
+                    });
+                }
+                // Revertir credenciales si falla
+                document.getElementById('credentialsSection').style.display = 'none';
+                document.getElementById('noCredentials').style.display = 'block';
+                document.getElementById('sendCredentials').disabled = true;
+            })
+            .finally(() => {
+                saveButton.disabled = false;
+                saveButton.innerHTML = '<i class="fas fa-save"></i> Guardar';
             });
         });
 
         // Enviar credenciales por correo
         document.getElementById('sendCredentials').addEventListener('click', function () {
+            const sendButton = this;
+            sendButton.disabled = true;
+            sendButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
+
             const name = document.getElementById('generatedName').textContent;
             const email = document.getElementById('generatedEmail').textContent;
             const password = document.getElementById('generatedPassword').textContent;
@@ -213,7 +262,7 @@
                     name: name,
                     email: email,
                     password: password,
-                    login_url: '{{ url('/login') }}' // Incluir link del sistema
+                    login_url: '{{ url('/login') }}'
                 })
             })
             .then(response => response.json())
@@ -226,7 +275,6 @@
                         timer: 2000,
                         showConfirmButton: false
                     });
-                    this.disabled = true;
                 } else {
                     Swal.fire({
                         icon: 'error',
@@ -245,6 +293,10 @@
                     timer: 2000,
                     showConfirmButton: false
                 });
+            })
+            .finally(() => {
+                sendButton.disabled = false;
+                sendButton.innerHTML = '<i class="fas fa-paper-plane"></i> Enviar Credenciales';
             });
         });
     </script>
