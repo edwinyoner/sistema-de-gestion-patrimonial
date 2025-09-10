@@ -18,14 +18,17 @@ class NewUserCredentials extends Mailable
     public $user;
     public $password;
     public $loginUrl;
+    public $verificationUrl;
+
     /**
      * Create a new message instance.
      */
-    public function __construct(User $user, $password, $loginUrl)
+    public function __construct(User $user, $password, $loginUrl, $verificationUrl)
     {
         $this->user = $user;
         $this->password = $password;
         $this->loginUrl = $loginUrl;
+        $this->verificationUrl = $verificationUrl;
     }
 
     /**
@@ -35,7 +38,7 @@ class NewUserCredentials extends Mailable
     {
         return new Envelope(
             from: new Address('sgp@winner-systems.com', config('app.name')),
-            subject: 'Credenciales de Acceso - Sistema de Gestión Patrimonial',
+            subject: 'Bienvenido al Sistema - Confirma tu cuenta',
         );
     }
 

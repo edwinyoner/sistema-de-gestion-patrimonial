@@ -5,8 +5,7 @@
         </x-slot>
 
         <x-slot name="description">
-            {{-- {{ __('Update your account\'s profile information and email address.') }} --}}
-            {{ __('Actualice la información de su cuenta.') }}
+            {{ __('Update your account\'s profile information and email address.') }}
         </x-slot>
 
         <x-slot name="form">
@@ -70,7 +69,7 @@
                     <div>
                         <label for="email" class="form-label">{{ __('Email') }}</label>
                         <input id="email" type="email" class="form-control mt-1" wire:model="state.email" required
-                            autocomplete="username" disabled/>
+                            autocomplete="username" />
                         <div class="text-danger mt-2" x-show="$wire.errors.email">
                             @error('email') {{ $message }} @enderror
                         </div>

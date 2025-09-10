@@ -125,7 +125,7 @@ class CompanyAsset extends Model
         $typeMap = [
             1 => 'Hardware', // Asumiendo que 1 es el ID para AssetHardware
             2 => 'Software', // Asumiendo que 2 es el ID para AssetSoftware
-            3 => 'Muebles', // Asumiendo que 3 es el ID para AssetFurniture
+            3 => 'Mobiliario', // Asumiendo que 3 es el ID para AssetFurniture
             4 => 'Maquinaria', // Asumiendo que 4 es el ID para AssetMachinery
             5 => 'Herramientas', // Asumiendo que 5 es el ID para AssetTool
             6 => 'Otros', // Asumiendo que 6 es el ID para AssetOther

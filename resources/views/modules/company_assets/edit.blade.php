@@ -220,7 +220,7 @@
                                 $typeMap = [
                                     'HARDWARE' => '_update_hardware',
                                     'SOFTWARE' => '_update_software',
-                                    'MUEBLES' => '_update_furniture',
+                                    'MOBILIARIOS' => '_update_furniture',
                                     'MAQUINARÍAS' => '_update_machinery',
                                     'HERRAMIENTAS' => '_update_tool',
                                     'OTROS' => '_update_other',

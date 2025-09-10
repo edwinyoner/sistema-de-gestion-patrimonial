@@ -30,7 +30,7 @@ class AssetFurniture extends Model
         'deleted_at' => 'datetime',
     ];
 
-    // Relación: un mueble pertenece a un CompanyAsset
+    // Relación: un mobiliario pertenece a un CompanyAsset
     public function companyAsset(): BelongsTo
     {
         return $this->belongsTo(CompanyAsset::class, 'company_asset_id');

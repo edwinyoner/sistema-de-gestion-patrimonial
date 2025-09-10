@@ -23,6 +23,21 @@
 @section('auth_header', __('adminlte::adminlte.login_message'))
 
 @section('auth_body')
+
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        @foreach ($errors->all() as $error)
+            <p>{{ $error }}</p>
+        @endforeach
+    </div>
+    @endif
+
+    @if (session('warning'))
+        <div class="alert alert-warning">
+            {{ session('warning') }}
+        </div>
+    @endif
+
     <form action="{{ $loginUrl }}" method="post">
         @csrf
 

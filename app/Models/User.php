@@ -78,7 +78,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $role = $this->roles->pluck('name')->first();
         if ($role) {
-            return "Rol: $role - $this->name | Winner Systems Member";
+            return "$role";
         }
         return "Miembro de Winner Systems Corporation - $this->name";
     }
@@ -91,5 +91,14 @@ class User extends Authenticatable implements MustVerifyEmail
     public function setNameAttribute($value)
     {
         $this->attributes['name'] = strtoupper($value);
+    }
+
+    /**
+     * Send the email verification notification.
+     * Sobrescribimos para evitar envío automático
+     */
+    public function sendEmailVerificationNotification()
+    {
+        // No hacer nada - el correo se envía desde el controlador
     }
 }

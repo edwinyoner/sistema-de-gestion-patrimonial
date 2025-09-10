@@ -76,7 +76,7 @@
                                 $typeMap = [
                                     'HARDWARE' => 'hardware',
                                     'SOFTWARE' => 'software',
-                                    'MUEBLES' => 'furniture',
+                                    'MOBILIARIOS' => 'furniture',
                                     'MAQUINARÍAS' => 'machinery',
                                     'HERRAMIENTAS' => 'tool',
                                     'OTROS' => 'other',
@@ -113,7 +113,7 @@
                                         </div>
                                         @break
 
-                                    @case('MUEBLES')
+                                    @case('MOBILIARIOS')
                                         <div class="card">
                                             <div class="card-body">
                                                 <p><strong>Nombre:</strong> {{ $companyAsset->furniture->furniture_name ?? 'No especificado' }}</p>

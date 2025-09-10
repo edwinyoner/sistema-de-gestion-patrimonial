@@ -30,7 +30,7 @@ class CreateNewUser implements CreatesNewUsers
             'name' => $input['name'],
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
-            'force_password_change' => true, // Añadido
+            //'force_password_change' => true, // Añadido
             'status' => true, // Añadido
         ]);
     }

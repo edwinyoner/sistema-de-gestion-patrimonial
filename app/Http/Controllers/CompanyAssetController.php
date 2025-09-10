@@ -142,10 +142,10 @@ class CompanyAssetController extends Controller
 
                 case 3: // MOBILIARIO
                     $furnitureData = $request->only(['furniture_name', 'brand', 'model', 'color', 'material', 'dimensions', 'description', 'status']);
-                    Log::info('Datos específicos para muebles: ', $furnitureData);
+                    Log::info('Datos específicos para mobiliario: ', $furnitureData);
                     $validator = Validator::make($furnitureData, (new AssetFurnitureRequest)->rules());
                     if ($validator->fails()) {
-                        Log::error('Validación de muebles falló: ', $validator->errors()->all());
+                        Log::error('Validación de mobiliario falló: ', $validator->errors()->all());
                         return redirect()->back()->withErrors($validator)->withInput();
                     }
                     $companyAsset->furniture()->create($furnitureData);
@@ -278,7 +278,7 @@ class CompanyAssetController extends Controller
                     );
                     break;
 
-                case 3: // MUEBLES
+                case 3: // MOBILIARIO
                     $furnitureData = $request->only(['furniture_name', 'brand', 'model', 'color', 'material', 'dimensions', 'description', 'status']);
                     $validator = Validator::make($furnitureData, (new AssetFurnitureRequest)->rules());
                     if ($validator->fails()) {

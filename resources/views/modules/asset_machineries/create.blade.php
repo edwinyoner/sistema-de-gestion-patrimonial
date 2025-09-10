@@ -1,8 +1,8 @@
 @extends('layouts.main')
 
-@section('subtitle', 'Crear Mueble')
+@section('subtitle', 'Crear MuMobiliarioeble')
 @section('content_header_title', 'Activos de la Compañía')
-@section('content_header_subtitle', 'Registrar nuevo mueble')
+@section('content_header_subtitle', 'Registrar nuevo mobiliario')
 
 @section('plugins.Datatables', true)
 @section('plugins.Sweetalert2', true)
@@ -27,7 +27,7 @@
 
     <div class="row justify-content-center">
         <div class="col-12">
-            <x-adminlte-card title="Crear Nuevo Mueble" theme="info" icon="fas fa-couch" collapsible>
+            <x-adminlte-card title="Crear Nuevo Mobiliario" theme="info" icon="fas fa-couch" collapsible>
                 <form method="POST" action="{{ route('asset_furnitures.store') }}" enctype="multipart/form-data">
                     @csrf
 
@@ -152,10 +152,10 @@
                         </div>
                     </div>
 
-                    <!-- Fila 4: Nombre del Mueble, Marca y Modelo -->
+                    <!-- Fila 4: Nombre del Mobiliario, Marca y Modelo -->
                     <div class="row">
                         <div class="col-md-4">
-                            <x-adminlte-input name="furniture_name" label="Nombre del Mueble"
+                            <x-adminlte-input name="furniture_name" label="Nombre del Mobiliario"
                                 placeholder="Ej. Mesa Ejecutiva" label-class="text-lightblue"
                                 value="{{ old('furniture_name') }}" required class="auto-uppercase">
                                 <x-slot name="prependSlot">
@@ -225,7 +225,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <x-adminlte-textarea name="description" label="Descripción"
-                                placeholder="Detalles del mueble..." label-class="text-lightblue"
+                                placeholder="Detalles del mobiliario..." label-class="text-lightblue"
                                 value="{{ old('description') }}" nullable rows="5">
                                 <x-slot name="prependSlot">
                                     <div class="input-group-text bg-info">

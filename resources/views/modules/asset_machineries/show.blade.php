@@ -1,14 +1,14 @@
 @extends('layouts.main')
 
-@section('subtitle', 'Detalles del Mueble')
-@section('content_header_title', 'Activos de Muebles')
-@section('content_header_subtitle', 'Ver información del mueble')
+@section('subtitle', 'Detalles del Mobiliario')
+@section('content_header_title', 'Activos de Mobiliarios')
+@section('content_header_subtitle', 'Ver información del mobiliario')
 
 @section('content_body')
 <div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-md-10">
-            <x-adminlte-card theme="dark" header-class="bg-gradient-dark text-white" title="Detalles del Mueble {{ $furnitureAsset->furniture_name }}">
+            <x-adminlte-card theme="dark" header-class="bg-gradient-dark text-white" title="Detalles del Mobiliario {{ $furnitureAsset->furniture_name }}">
                 <div class="row">
                     <div class="col-md-6">
                         <h5>Datos Generales</h5>
@@ -26,7 +26,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="text-center">
-                            <h5>Foto del Mueble</h5>
+                            <h5>Foto del Mobiliario</h5>
                             <hr>
                             @if ($furnitureAsset->companyAsset->photo_path)
                                 <img src="{{ $furnitureAsset->companyAsset->photo_path }}" alt="{{ $furnitureAsset->furniture_name }}" width="200" style="object-fit: cover; border-radius: 5px;">
@@ -39,9 +39,9 @@
 
                 <div class="row mt-4">
                     <div class="col-md-12">
-                        <h5>Datos Específicos del Mueble</h5>
+                        <h5>Datos Específicos del Mobiliario</h5>
                         <hr>
-                        <p><strong>Nombre del Mueble:</strong> {{ $furnitureAsset->furniture_name ?? 'No especificado' }}</p>
+                        <p><strong>Nombre del Mobiliario:</strong> {{ $furnitureAsset->furniture_name ?? 'No especificado' }}</p>
                         <p><strong>Marca:</strong> {{ $furnitureAsset->brand ?? 'No especificada' }}</p>
                         <p><strong>Modelo:</strong> {{ $furnitureAsset->model ?? 'No especificado' }}</p>
                         <p><strong>Color:</strong> {{ $furnitureAsset->color ?? 'No especificado' }}</p>

@@ -32,11 +32,11 @@ class Authenticate extends Middleware
         if (auth()->check()) {
             $user = auth()->user();
 
-            // Verificar si la cuenta está inactiva
-            if (!$user->status) {
-                auth()->logout();
-                return redirect('/login')->withErrors(['email' => 'Tu cuenta está inactiva.']);
-            }
+            // // Verificar si la cuenta está inactiva
+            // if (!$user->status) {
+            //     auth()->logout();
+            //     return redirect('/login')->withErrors(['email' => 'Tu cuenta está inactiva.']);
+            // }
         }
 
         return $next($request);

@@ -167,28 +167,8 @@ return [
     |
     */
 
-    // 'use_route_url' => false,
-    // 'dashboard_url' => 'home',
-    // 'logout_url' => 'logout',
-    // 'login_url' => 'login',
-    // 'register_url' => 'register',
-    // 'password_reset_url' => 'password/reset',
-    // 'password_email_url' => 'password/email',
-    // 'profile_url' => false,
-    // 'disable_darkmode_routes' => false,
-
-    // 'use_route_url' => true, // Cambia a true para usar route() en lugar de url()
-    // 'dashboard_url' => 'dashboard',
-    // 'logout_url' => 'logout',
-    // 'login_url' => 'login',
-    // 'register_url' => 'register',
-    // 'password_reset_url' => 'password.request', // Cambia a 'password.request' en lugar de 'password/reset'
-    // 'password_email_url' => 'password.email', // Cambia a 'password.email' en lugar de 'password/email'
-    // 'profile_url' => 'profile/username', // Cambia a 'profile/username' en lugar de false
-    // 'disable_darkmode_routes' => false,
-
     'use_route_url' => false,
-    'dashboard_url' => 'home',
+    'dashboard_url' => '/dashboard', //home
     'logout_url' => 'logout',
     'login_url' => 'login',
     'register_url' => 'register',
@@ -232,12 +212,12 @@ return [
 
 
     'menu' => [
-
-        // 🔍 BARRA SUPERIOR
+        // BARRA SUPERIOR
         [
             'type' => 'navbar-search',
             'text' => 'Buscar...',
             'topnav_right' => false,
+            // Sin permiso específico - todos pueden buscar
         ],
         [
             'type' => 'fullscreen-widget',
@@ -245,8 +225,33 @@ return [
         ],
         [
             'type'         => 'darkmode-widget',
-            'topnav_right' => true, // Or "topnav => true" to place on the left.
+            'topnav_right' => true,
         ],
+
+        // BARRA LATERAL
+        // Agregar sección de perfil encima de "Buscar"
+        // [
+        //     'type' => 'custom',
+        //     'content' => function () {
+        //         $user = auth()->user();
+        //         if ($user) {
+        //             $name = $user->name ?? 'Usuario';
+        //             $role = $user->roles->first()->name ?? 'Sin rol';
+        //             return '<div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        //                         <div class="image">
+        //                             <img src="' . ($user->profile_photo_url ?? asset('vendor/adminlte/dist/img/user2-160x160.jpg')) . '" class="img-circle elevation-2" alt="User Image" style="width: 30px; height: 30px;">
+        //                         </div>
+        //                         <div class="info">
+        //                             <a href="' . url('user/profile') . '" class="d-block">' . $name . '</a>
+        //                             <span class="text-muted">' . $role . '</span>
+        //                         </div>
+        //                     </div>';
+        //         } else {
+        //             return '<div class="user-panel mt-3 pb-3 mb-3 d-flex">No autenticado</div>'; // Depuración
+        //         }
+        //     },
+        //     'topnav' => false,
+        // ],
 
         // Sidebar items:
         [
@@ -254,7 +259,7 @@ return [
             'text' => 'Buscar',
         ],
 
-        // 🧭 PANEL PRINCIPAL
+        // PANEL PRINCIPAL
         [
             'header' => 'PANEL PRINCIPAL',
             'classes'    => 'text-white text-bold text-center',
@@ -266,10 +271,10 @@ return [
             'icon'       => 'fas fa-tachometer-alt',
             'icon_color' => 'primary',
             'classes'    => 'text-white',
+            // Sin permiso específico - todos tienen acceso al dashboard
         ],
 
-
-        // 👥 GESTIÓN DE ACCESOS
+        // GESTIÓN DE ACCESOS
         [
             'header'     => 'GESTIÓN DE ACCESOS',
             'classes'    => 'text-white text-bold text-center',
@@ -281,7 +286,7 @@ return [
             'icon'       => 'fas fa-user',
             'icon_color' => 'info',
             'classes'    => 'text-white',
-            //'can'        => 'ver usuarios',
+            'can'        => 'ver usuarios',
             'active'     => ['users*'],
         ],
 
@@ -291,7 +296,7 @@ return [
             'icon'       => 'fas fa-user-tag',
             'icon_color' => 'success',
             'classes'    => 'text-white',
-            //'can'        => 'ver roles',
+            'can'        => 'ver roles',
             'active'     => ['roles*'],
         ],
 
@@ -301,12 +306,11 @@ return [
             'icon'       => 'fas fa-key',
             'icon_color' => 'warning',
             'classes'    => 'text-white',
-            //'can'        => 'ver permisos',
+            'can'        => 'ver permisos',
             'active'     => ['permissions*'],
         ],
 
-
-        // 🏢 ORGANIZACIÓN INTERNA
+        // ORGANIZACIÓN INTERNA
         [
             'header' => 'ORGANIZACIÓN INTERNA',
             'classes'    => 'text-white text-bold text-center',
@@ -317,6 +321,7 @@ return [
             'icon' => 'fas fa-building',
             'icon_color' => 'info',
             'classes'    => 'text-white',
+            'can' => 'ver oficinas',
             'active' => ['offices*'],
         ],
         [
@@ -325,6 +330,7 @@ return [
             'icon' => 'fas fa-briefcase',
             'icon_color' => 'success',
             'classes'    => 'text-white',
+            'can' => 'ver puestos de trabajo',
             'active' => ['job-positions*'],
         ],
         [
@@ -333,6 +339,7 @@ return [
             'icon' => 'fas fa-file-contract',
             'icon_color' => 'warning',
             'classes'    => 'text-white',
+            'can' => 'ver tipos de contratos',
             'active' => ['contract-types*'],
         ],
         [
@@ -341,33 +348,34 @@ return [
             'icon' => 'fas fa-users',
             'icon_color' => 'danger',
             'classes'    => 'text-white',
+            'can' => 'ver trabajadores',
             'active' => ['workers*'],
         ],
 
-        // 📦 ACTIVOS
+        // ACTIVOS
         [
             'header' => 'GESTIÓN DE ACTIVOS',
             'classes'    => 'text-white text-bold text-center',
         ],
-        // 🗂️ TIPOS DE ACTIVOS
+        // TIPOS DE ACTIVOS
         [
             'text'       => 'Tipos de Activos',
-            'route'  => 'asset_types.index',
+            'route'      => 'asset_types.index',
             'icon'       => 'fas fa-cubes',
             'icon_color' => 'info',
             'classes'    => 'text-white',
-            //'can'        => 'ver tipos de activos',
-            'active' => ['asset-types*'], // Activo para cualquier ruta relacionada
+            'can'        => 'ver tipos de activos',
+            'active'     => ['asset-types*'],
         ],
-        // 🗂️ ESTADOS DE ACTIVOS
+        // ESTADOS DE ACTIVOS
         [
             'text'       => 'Estados de Activos',
             'route'      => 'asset_states.index',
             'icon'       => 'fas fa-clipboard-check',
             'icon_color' => 'success',
             'classes'    => 'text-white',
-            //'can'        => 'ver tipos de activos',
-            'active' => ['asset-states*'], // Activo para cualquier ruta relacionada
+            'can'        => 'ver estados de activos',
+            'active'     => ['asset-states*'],
         ],
         [
             'text'       => 'Tipos de Software',
@@ -375,8 +383,8 @@ return [
             'icon'       => 'fas fa-laptop-code',
             'icon_color' => 'warning',
             'classes'    => 'text-white',
-            //'can'        => 'ver usuarios',
-            'active' => ['software-types*'],
+            'can'        => 'ver tipos de software',
+            'active'     => ['software-types*'],
         ],
 
         [
@@ -384,7 +392,8 @@ return [
             'icon'       => 'fas fa-boxes',
             'icon_color' => 'danger',
             'classes'    => 'text-white',
-            'active' => ['company-assets*'],
+            'can'        => 'ver activos de la empresa', // Permiso general para ver el menú
+            'active'     => ['company-assets*'],
             'submenu'    => [
                 [
                     'text' => 'General',
@@ -392,6 +401,7 @@ return [
                     'icon' => 'fas fa-clipboard-list',
                     'icon_color' => 'danger',
                     'classes'    => 'text-danger',
+                    'can' => 'ver activos de la empresa',
                     'active' => ['company-assets', 'company-assets/index', 'company-assets/create', 'company-assets/edit', 'company-assets/show'],
                 ],
                 [
@@ -400,6 +410,7 @@ return [
                     'icon' => 'fas fa-desktop',
                     'icon_color' => 'danger',
                     'classes'    => 'text-danger',
+                    'can' => 'ver hardware',
                     'active' => ['asset-hardwares*'], 
                 ],
                 [
@@ -408,6 +419,7 @@ return [
                     'icon' => 'fas fa-laptop-code',
                     'icon_color' => 'danger',
                     'classes'    => 'text-danger',
+                    'can' => 'ver software',
                     'active' => ['asset-softwares*'],
                 ],
                 [
@@ -416,6 +428,7 @@ return [
                     'icon' => 'fas fa-couch',
                     'icon_color' => 'danger',
                     'classes'    => 'text-danger',
+                    'can' => 'ver mobiliarios',
                     'active' => ['assets-furnitures*'],
                 ],
                 [
@@ -424,6 +437,7 @@ return [
                     'icon' => 'fas fa-tractor',
                     'icon_color' => 'danger',
                     'classes'    => 'text-danger',
+                    'can' => 'ver maquinaria',
                     'active' => ['asset-machineries*']
                 ],
                 [
@@ -432,6 +446,7 @@ return [
                     'icon' => 'fas fa-tools',
                     'icon_color' => 'danger',
                     'classes'    => 'text-danger',
+                    'can' => 'ver otros activos', // Herramientas entran en "otros activos"
                     'active' => ['asset-tools*'],
                 ],
                 [
@@ -440,14 +455,13 @@ return [
                     'icon' => 'fas fa-layer-group',
                     'icon_color' => 'danger',
                     'classes'    => 'text-danger',
+                    'can' => 'ver otros activos',
                     'active' => ['asset-others*'], 
                 ]
             ],
         ],
 
-
-
-        // ⚙️ CONFIGURACIÓN
+        // CONFIGURACIÓN
         [
             'header' => 'CONFIGURACIÓN',
             'classes'    => 'text-white text-bold text-center',
@@ -459,10 +473,10 @@ return [
             'icon'       => 'fas fa-user-circle',
             'icon_color' => 'info',
             'classes'    => 'text-white',
-            //'can'        => 'ver perfil',
+            // Sin permiso específico - todos pueden ver su perfil
         ],
 
-        // 📘 DOCUMENTACIÓN Y SOPORTE
+        // DOCUMENTACIÓN Y SOPORTE
         [
             'header' => 'DOCUMENTACIÓN Y SOPORTE',
             'classes'    => 'text-white text-bold text-center',
@@ -474,7 +488,7 @@ return [
             'icon'       => 'fas fa-book',
             'icon_color' => 'info',
             'classes'    => 'text-white',
-            //'can'        => 'ver manual',
+            // Sin permiso específico - todos pueden acceder al manual
         ],
 
         [
@@ -483,6 +497,7 @@ return [
             'icon'       => 'fas fa-headset',
             'icon_color' => 'success',
             'classes'    => 'text-white',
+            // Sin permiso específico - todos pueden contactar soporte
         ],
 
         [
@@ -491,8 +506,8 @@ return [
             'icon'       => 'fas fa-info-circle',
             'icon_color' => 'warning',
             'classes'    => 'text-white',
+            // Sin permiso específico - información pública
         ],
-
     ],
 
 

@@ -30,7 +30,7 @@ Route::view('/terms', 'terms')->name('terms.show');
 Route::view('/policy', 'policy')->name('policy.show');
 
 // Rutas protegidas
-Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',])->group(function () {
+Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified', 'user.status'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('job-positions', JobPositionController::class)->names('job_positions');
     Route::resource('offices', OfficeController::class)->names('offices');
@@ -54,6 +54,6 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::resource('permissions', PermissionController::class)->names('permissions');
     Route::post('/users/{userId}/assign-role', [UserController::class, 'assignRole'])->name('users.assignRole');
 
-    // En routes/web.php
-    Route::post('/send-credentials', [UserController::class, 'sendCredentials'])->name('users.send-credentials');
+    Route::post('/send-credentials', [UserController::class, 'sendCredentials'])->name('send-credentials');
+    Route::post('/update-password-and-send', [UserController::class, 'updatePasswordAndSend'])->name('update-password-and-send');
 });
