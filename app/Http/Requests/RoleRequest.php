@@ -35,8 +35,7 @@ class RoleRequest extends FormRequest
                 ],
                 'guard_name' => 'required|string|in:web', // 'in:web,sanctum', Permitir ambos guards
                 'permissions' => 'nullable|array',
-                'permissions.*' => 'exists:permissions,name', // Cada permiso debe existir
-                'status' => 'boolean',
+                'permissions.*' => 'exists:permissions,id', // Cambiado a 'id' en lugar de 'name'
             ];
         }
 
@@ -53,8 +52,7 @@ class RoleRequest extends FormRequest
                 ],
                 'guard_name' => 'required|string|in:web', // 'in:web,sanctum', Permitir ambos guards
                 'permissions' => 'nullable|array',
-                'permissions.*' => 'exists:permissions,name', // Cada permiso debe existir
-                'status' => 'boolean',
+                'permissions.*' => 'exists:permissions,id', // Cambiado a 'id' en lugar de 'name'
             ];
         }
 
@@ -80,7 +78,6 @@ class RoleRequest extends FormRequest
             'guard_name.in' => 'El guard name debe ser "web".',
             'permissions.array' => 'Los permisos deben ser un array.',
             'permissions.*.exists' => 'El permiso seleccionado no existe.',
-            'status.boolean' => 'El estado debe ser verdadero o falso.',
         ];
     }
 
@@ -89,10 +86,6 @@ class RoleRequest extends FormRequest
      */
     protected function prepareForValidation()
     {
-        if (!array_key_exists('status', $this->all()) || $this->all()['status'] === null) {
-            $this->merge(['status' => true]);
-        }
-
         // Si no se proporciona guard_name, usar 'web' por defecto
         if (!array_key_exists('guard_name', $this->all()) || $this->all()['guard_name'] === null) {
             $this->merge(['guard_name' => 'web']);
@@ -100,7 +93,7 @@ class RoleRequest extends FormRequest
 
         // Limpiar el array de permisos para evitar valores inválidos
         if (array_key_exists('permissions', $this->all()) && is_array($this->all()['permissions'])) {
-            $this->merge(['permissions' => array_filter($this->all()['permissions'])]);
+            $this->merge(['permissions' => array_filter($this->all()['permissions'], 'is_numeric')]);
         }
     }
 }

@@ -83,6 +83,7 @@
                             ['label' => 'Nombre', 'width' => 15],
                             ['label' => 'Guard Name', 'width' => 12],
                             ['label' => 'Permisos', 'width' => 55],
+                            // ['label' => 'Estado', 'width' => 15],
                             ['label' => 'Acciones', 'no-export' => true, 'width' => 15],
                         ];
 
@@ -204,6 +205,12 @@
                                         </small>
                                     </div>
                                 </td>
+                                {{-- <td>
+                                    <span class="badge {{ $role->status ? 'badge-success' : 'badge-secondary' }}">
+                                        <i class="fas fa-{{ $role->status ? 'check-circle' : 'times-circle' }}"></i>
+                                        {{ $role->status ? 'Activo' : 'Inactivo' }}
+                                    </span>
+                                </td> --}}
                                 <td class="text-center">
                                     <div class="d-flex justify-content-center gap-2">
                                         {{-- Botón Ver --}}
@@ -260,7 +267,6 @@
 
 {{-- Extra CSS --}}
 @push('css')
-    <link rel="stylesheet" href="{{ asset('assets/css/roles/index.css') }}">
     <style>
         #success-alert {
             transition: opacity 0.5s ease;
@@ -331,7 +337,6 @@
                         <p><strong>Permisos asociados:</strong> ${permissionCount}</p>
                         <br>
                         <p class="text-danger"><i class="fas fa-exclamation-triangle"></i> Esta acción eliminará el rol y todos sus permisos asociados.</p>
-                        <p class="text-warning"><small>Los usuarios con este rol mantendrán sus otros roles.</small></p>
                     </div>
                 `,
                 icon: 'warning',
