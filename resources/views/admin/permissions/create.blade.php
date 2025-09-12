@@ -7,6 +7,7 @@
 @section('plugins.Sweetalert2', true)
 
 @section('content_body')
+@can('crear permisos')
 <div class="container-fluid">
     @if (session('success'))
         <x-adminlte-alert theme="success" id="success-alert" title="Éxito" dismissable>
@@ -74,6 +75,13 @@
         </div>
     </div>
 </div>
+@else
+    <div class="container-fluid">
+        <x-adminlte-alert theme="warning" title="Acceso Denegado" dismissable>
+            No tienes permiso para crear un nuevo permiso.
+        </x-adminlte-alert>
+    </div>
+@endcan
 @stop
 
 @push('css')

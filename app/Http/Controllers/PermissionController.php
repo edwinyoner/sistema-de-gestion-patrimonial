@@ -8,6 +8,14 @@ use Illuminate\Http\Request;
 
 class PermissionController extends Controller
 {
+    public function __construct()
+    {
+        // Middleware para verificar permisos
+        $this->middleware('permission:ver permisos')->only(['index', 'show']);
+        $this->middleware('permission:crear permisos')->only(['create', 'store']);
+        $this->middleware('permission:actualizar permisos')->only(['edit', 'update']);
+        $this->middleware('permission:eliminar permisos')->only(['destroy']);
+    }
     public function index()
     {
         $permissions = Permission::all();
