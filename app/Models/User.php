@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Notifications\CustomResetPassword;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -93,12 +94,24 @@ class User extends Authenticatable implements MustVerifyEmail
         $this->attributes['name'] = strtoupper($value);
     }
 
+    
     /**
      * Send the email verification notification.
      * Sobrescribimos para evitar envío automático
      */
+    
     public function sendEmailVerificationNotification()
     {
         // No hacer nada - el correo se envía desde el controlador
+    }
+
+    /*
+    @Author: Edwin Yoner
+    @Date: 2025-09-12
+    @Change: Sobrescribimos para usar nuestra notificación personalizada
+    */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new CustomResetPassword($token));
     }
 }
