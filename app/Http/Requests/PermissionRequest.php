@@ -81,7 +81,7 @@ class PermissionRequest extends FormRequest
             'name.regex' => 'El nombre del permiso solo puede contener letras, espacios y guiones.',
             'guard_name.required' => 'El guard name es obligatorio.',
             'guard_name.string' => 'El guard name debe ser una cadena de texto.',
-            'guard_name.in' => 'El guard name debe ser "web",
+            'guard_name.in' => 'El guard name debe ser "web"',
         ];
     }
 
