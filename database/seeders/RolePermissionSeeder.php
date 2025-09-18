@@ -61,14 +61,14 @@ class RolePermissionSeeder extends Seeder
 
             // Gestión de tipos y estados (configuración operativa)
             'ver tipos de activos',
-            'crear tipos de activos',
-            'actualizar tipos de activos',
-            'eliminar tipos de activos',
+            // 'crear tipos de activos',
+            // 'actualizar tipos de activos',
+            // 'eliminar tipos de activos',
 
             'ver estados de activos',
-            'crear estados de activos',
-            'actualizar estados de activos',
-            'eliminar estados de activos',
+            // 'crear estados de activos',
+            // 'actualizar estados de activos',
+            // 'eliminar estados de activos',
 
             'ver tipos de software',
             'crear tipos de software',

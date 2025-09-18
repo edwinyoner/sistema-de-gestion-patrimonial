@@ -39,9 +39,11 @@
                     <a href="{{ route('asset_types.index') }}" class="btn btn-sm btn-success">
                         <i class="fas fa-arrow-left"></i> Volver
                     </a>
-                    <a href="{{ route('asset_types.edit', $assetType->id) }}" class="btn btn-sm btn-primary">
-                        <i class="fas fa-edit"></i> Editar
-                    </a>
+                    @can('actualizar tipos de activos')
+                        <a href="{{ route('asset_types.edit', $assetType->id) }}" class="btn btn-sm btn-primary">
+                            <i class="fas fa-edit"></i> Editar
+                        </a>
+                    @endcan
                 </div>
 
             </x-adminlte-card>

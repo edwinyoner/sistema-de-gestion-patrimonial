@@ -23,6 +23,7 @@ class AssetStateSeeder extends Seeder
             ['id' => 6, 'name' => 'EN MANTENIMIENTO', 'description' => 'El bien está en proceso de revisión o reparación.'],
             ['id' => 7, 'name' => 'DADO DE BAJA', 'description' => 'El bien ha sido retirado oficialmente del inventario.'],
             ['id' => 8, 'name' => 'REASIGNADO', 'description' => 'El bien ha sido transferido a otra oficina o usuario.'],
+            ['id' => 9, 'name'=>  'SIN ESTADO', 'description'=> 'El bien pertenece a software y no tiene un estado físico.'],
         ];
 
         foreach ($assetStates as $assetState) {

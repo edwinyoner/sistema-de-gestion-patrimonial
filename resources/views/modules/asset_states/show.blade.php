@@ -39,9 +39,11 @@
                     <a href="{{ route('asset_states.index') }}" class="btn btn-sm btn-success">
                         <i class="fas fa-arrow-left"></i> Volver
                     </a>
-                    <a href="{{ route('asset_states.edit', $assetState->id) }}" class="btn btn-sm btn-primary">
-                        <i class="fas fa-edit"></i> Editar
-                    </a>
+                    @can('actualizar estados de activos')
+                        <a href="{{ route('asset_states.edit', $assetState->id) }}" class="btn btn-sm btn-primary">
+                            <i class="fas fa-edit"></i> Editar
+                        </a>
+                    @endcan
                 </div>
 
             </x-adminlte-card>

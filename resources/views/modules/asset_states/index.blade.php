@@ -32,9 +32,11 @@
     <div class="row justify-content-center">
         <div class="col-12">
             <div class="mb-3 text-right">
-                <a href="{{ route('asset_states.create') }}" class="btn btn-sm btn-success">
-                    <i class="fas fa-plus mr-2"></i> Crear Estado de Activo
-                </a>
+                @can('crear estados de activos')
+                    <a href="{{ route('asset_states.create') }}" class="btn btn-sm btn-success">
+                        <i class="fas fa-plus mr-2"></i> Crear Estado de Activo
+                    </a>
+                @endcan
             </div>
 
             <x-adminlte-card theme="dark" header-class="bg-gradient-dark text-white" title="Estados de Activos Registrados">
@@ -74,27 +76,33 @@
                             <td class="text-center">
                                 <div class="d-flex justify-content-center gap-2">
                                     <!-- Ver -->
-                                    <a href="{{ route('asset_states.show', $assetState->id) }}"
-                                        class="btn btn-sm btn-outline-info shadow-sm mx-1" title="Ver detalles del estado de activo">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
+                                    @can('ver estados de activos')
+                                        <a href="{{ route('asset_states.show', $assetState->id) }}"
+                                            class="btn btn-sm btn-outline-info shadow-sm mx-1" title="Ver detalles del estado de activo">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                    @endcan
 
                                     <!-- Editar -->
-                                    <a href="{{ route('asset_states.edit', $assetState->id) }}"
-                                        class="btn btn-sm btn-outline-primary shadow-sm mx-1" title="Editar estado de activo">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
+                                    @can('actualizar estados de activos')
+                                        <a href="{{ route('asset_states.edit', $assetState->id) }}"
+                                            class="btn btn-sm btn-outline-primary shadow-sm mx-1" title="Editar estado de activo">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                    @endcan
 
                                     <!-- Eliminar -->
-                                    <form id="deleteForm{{ $assetState->id }}" class="d-inline" method="POST"
-                                        action="{{ route('asset_states.destroy', $assetState->id) }}">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="button" class="btn btn-sm btn-outline-danger shadow-sm mx-1"
-                                            title="Eliminar estado de activo" onclick="confirmDelete({{ $assetState->id }})">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </form>
+                                    @can('eliminar estados de activos')
+                                        <form id="deleteForm{{ $assetState->id }}" class="d-inline" method="POST"
+                                            action="{{ route('asset_states.destroy', $assetState->id) }}">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="button" class="btn btn-sm btn-outline-danger shadow-sm mx-1"
+                                                title="Eliminar estado de activo" onclick="confirmDelete({{ $assetState->id }})">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    @endcan
                                 </div>
                             </td>
                         </tr>

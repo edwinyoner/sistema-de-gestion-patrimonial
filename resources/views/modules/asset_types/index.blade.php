@@ -32,9 +32,11 @@
     <div class="row justify-content-center">
         <div class="col-12">
             <div class="mb-3 text-right">
-                <a href="{{ route('asset_types.create') }}" class="btn btn-sm btn-success">
-                    <i class="fas fa-plus mr-2"></i> Crear Tipo de Activo
-                </a>
+                @can('crear tipos de activos')
+                    <a href="{{ route('asset_types.create') }}" class="btn btn-sm btn-success">
+                        <i class="fas fa-plus mr-2"></i> Crear Tipo de Activo
+                    </a>
+                @endcan
             </div>
 
             <x-adminlte-card theme="dark" header-class="bg-gradient-dark text-white" title="Tipos de Activos Registrados">
@@ -74,27 +76,33 @@
                             <td class="text-center">
                                 <div class="d-flex justify-content-center gap-2">
                                     <!-- Ver -->
-                                    <a href="{{ route('asset_types.show', $assetType->id) }}"
-                                        class="btn btn-sm btn-outline-info shadow-sm mx-1" title="Ver detalles del tipo de activo">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
+                                    @can('ver tipos de activos')
+                                        <a href="{{ route('asset_types.show', $assetType->id) }}"
+                                            class="btn btn-sm btn-outline-info shadow-sm mx-1" title="Ver detalles del tipo de activo">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                    @endcan
 
                                     <!-- Editar -->
-                                    <a href="{{ route('asset_types.edit', $assetType->id) }}"
-                                        class="btn btn-sm btn-outline-primary shadow-sm mx-1" title="Editar tipo de activo">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
+                                    @can('actualizar tipos de activos')
+                                        <a href="{{ route('asset_types.edit', $assetType->id) }}"
+                                            class="btn btn-sm btn-outline-primary shadow-sm mx-1" title="Editar tipo de activo">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                    @endcan
 
                                     <!-- Eliminar -->
-                                    <form id="deleteForm{{ $assetType->id }}" class="d-inline" method="POST"
-                                        action="{{ route('asset_types.destroy', $assetType->id) }}">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="button" class="btn btn-sm btn-outline-danger shadow-sm mx-1"
-                                            title="Eliminar tipo de activo" onclick="confirmDelete({{ $assetType->id }})">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </form>
+                                    @can('eliminar tipos de activos')
+                                        <form id="deleteForm{{ $assetType->id }}" class="d-inline" method="POST"
+                                            action="{{ route('asset_types.destroy', $assetType->id) }}">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="button" class="btn btn-sm btn-outline-danger shadow-sm mx-1"
+                                                title="Eliminar tipo de activo" onclick="confirmDelete({{ $assetType->id }})">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    @endcan
                                 </div>
                             </td>
                         </tr>

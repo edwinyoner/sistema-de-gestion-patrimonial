@@ -228,31 +228,6 @@ return [
             'topnav_right' => true,
         ],
 
-        // BARRA LATERAL
-        // Agregar sección de perfil encima de "Buscar"
-        // [
-        //     'type' => 'custom',
-        //     'content' => function () {
-        //         $user = auth()->user();
-        //         if ($user) {
-        //             $name = $user->name ?? 'Usuario';
-        //             $role = $user->roles->first()->name ?? 'Sin rol';
-        //             return '<div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        //                         <div class="image">
-        //                             <img src="' . ($user->profile_photo_url ?? asset('vendor/adminlte/dist/img/user2-160x160.jpg')) . '" class="img-circle elevation-2" alt="User Image" style="width: 30px; height: 30px;">
-        //                         </div>
-        //                         <div class="info">
-        //                             <a href="' . url('user/profile') . '" class="d-block">' . $name . '</a>
-        //                             <span class="text-muted">' . $role . '</span>
-        //                         </div>
-        //                     </div>';
-        //         } else {
-        //             return '<div class="user-panel mt-3 pb-3 mb-3 d-flex">No autenticado</div>'; // Depuración
-        //         }
-        //     },
-        //     'topnav' => false,
-        // ],
-
         // Sidebar items:
         [
             'type' => 'sidebar-menu-search',
@@ -484,7 +459,7 @@ return [
 
         [
             'text'       => 'Manual del Usuario',
-            'url'        => 'manual-usuario',
+            'route'      => 'manual-usuario.index',
             'icon'       => 'fas fa-book',
             'icon_color' => 'info',
             'classes'    => 'text-white',
@@ -502,7 +477,7 @@ return [
 
         [
             'text'       => 'Acerca del Sistema',
-            'url'        => 'acerca-del-sistema',
+            'route'      => 'about',
             'icon'       => 'fas fa-info-circle',
             'icon_color' => 'warning',
             'classes'    => 'text-white',

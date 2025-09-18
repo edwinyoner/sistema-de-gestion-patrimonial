@@ -32,9 +32,9 @@
     <div class="row justify-content-center">
         <div class="col-12">
             <div class="mb-3 text-right">
-                <a href="{{ route('asset_tools.create') }}" class="btn btn-sm btn-success">
+                {{-- <a href="{{ route('asset_tools.create') }}" class="btn btn-sm btn-success">
                     <i class="fas fa-plus mr-2"></i> Crear Herramienta
-                </a>
+                </a> --}}
             </div>
 
             <x-adminlte-card theme="dark" header-class="bg-gradient-dark text-white" title="Herramientas Registradas">

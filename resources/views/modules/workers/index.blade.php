@@ -10,113 +10,142 @@
 @section('content_body')
 <div class="container-fluid">
 
-    <!-- Título mejorado con HTML puro -->
-    <div class="card-header bg-gradient-primary text-white text-center py-3 mb-4">
-        <h2 class="mb-0">TRABAJADORES</h2>
-        <div class="mt-2">
-            <span class="ml-2"><i class="fas fa-users mr-1"></i> Gestión de Trabajadores</span>
-            <span class="badge badge-light">{{ $workers->count() }} Trabajadores</span>
-        </div>
-    </div>
-
-    @if (session('success'))
-        <x-adminlte-alert theme="success" id="success-alert" title="Éxito" dismissable>
-            {{ session('success') }}
-        </x-adminlte-alert>
-    @elseif (session('error'))
-        <x-adminlte-alert theme="danger" id="error-alert" title="Error" dismissable>
-            {{ session('error') }}
-        </x-adminlte-alert>
-    @endif
-
-    <div class="row justify-content-center">
-        <div class="col-12">
-            <div class="mb-3 text-right">
-                <a href="{{ route('workers.create') }}" class="btn btn-sm btn-success">
-                    <i class="fas fa-plus mr-2"></i> Crear Trabajador
-                </a>
+    {{-- Verificar si el usuario tiene permiso para ver trabajadores --}}
+    @cannot('ver usuarios')
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <x-adminlte-card title="Acceso Denegado" theme="danger" icon="fas fa-exclamation-triangle">
+                    <div class="text-center">
+                        <i class="fas fa-lock fa-4x text-danger mb-3"></i>
+                        <h4>No tienes permisos</h4>
+                        <p class="text-muted">No tienes los permisos necesarios para ver la lista de trabajadores.</p>
+                        
+                        <div class="mt-3">
+                            <a href="{{ url('/dashboard') }}" class="btn btn-primary">
+                                <i class="fas fa-tachometer-alt mr-1"></i> Dashboard
+                            </a>
+                        </div>
+                    </div>
+                </x-adminlte-card>
             </div>
-
-            <x-adminlte-card theme="dark" header-class="bg-gradient-dark text-white" title="Trabajadores Registrados">
-                @php
-                    $heads = [
-                        ['label' => 'ID', 'width' => 5],
-                        ['label' => 'DNI', 'width' => 10],
-                        ['label' => 'Nombre', 'width' => 15],
-                        ['label' => 'Apellido Paterno', 'width' => 15],
-                        ['label' => 'Apellido Materno', 'width' => 15],
-                        ['label' => 'Correo', 'width' => 20],
-                        ['label' => 'Teléfono', 'width' => 10],
-                        ['label' => 'Oficina', 'width' => 10],
-                        ['label' => 'Cargo', 'width' => 10],
-                        ['label' => 'Contrato', 'width' => 10],
-                        ['label' => 'Estado', 'width' => 10],
-                        ['label' => 'Acciones', 'no-export' => true, 'width' => 15],
-                    ];
-
-                    $config = [
-                        'language' => [
-                            'url' => asset('/assets/js/es-ES.json'),
-                        ],
-                        'responsive' => true,
-                        'autoWidth' => false,
-                        'paging' => true,
-                        'searching' => true,
-                        'ordering' => true,
-                        'pageLength' => 10,
-                    ];
-                @endphp
-
-                <x-adminlte-datatable id="table1" :heads="$heads" :config="$config" striped hoverable bordered sm>
-                    @foreach ($workers as $worker)
-                        <tr>
-                            <td>{{ $worker->id }}</td>
-                            <td>{{ $worker->dni }}</td>
-                            <td>{{ $worker->first_name }}</td>
-                            <td>{{ $worker->last_name_paternal }}</td>
-                            <td>{{ $worker->last_name_maternal }}</td>
-                            <td>{{ $worker->email }}</td>
-                            <td>{{ $worker->phone ?? 'No asignado' }}</td>
-                            <td>{{ $worker->office->name ?? 'Sin oficina' }}</td>
-                            <td>{{ $worker->jobPosition->name ?? 'Sin cargo' }}</td>
-                            <td>{{ $worker->contractType->name ?? 'Sin tipo de contrato' }}</td>
-                            <td>
-                                <span style="color: {{ $worker->status ? 'green' : 'red' }}; font-weight: bold;">
-                                    {{ $worker->status ? 'Activo' : 'Inactivo' }}
-                                </span>
-                            </td>
-                            <td class="text-center">
-                                <div class="d-flex justify-content-center gap-2">
-                                    <!-- Ver -->
-                                    <a href="{{ route('workers.show', $worker->id) }}"
-                                       class="btn btn-sm btn-outline-info shadow-sm mx-1" title="Ver detalles del trabajador">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
-
-                                    <!-- Editar -->
-                                    <a href="{{ route('workers.edit', $worker->id) }}"
-                                       class="btn btn-sm btn-outline-primary shadow-sm mx-1" title="Editar trabajador">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-
-                                    <!-- Eliminar -->
-                                    <form id="deleteForm{{ $worker->id }}" class="d-inline" method="POST"
-                                          action="{{ route('workers.destroy', $worker->id) }}">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="button" class="btn btn-sm btn-outline-danger shadow-sm mx-1"
-                                                title="Eliminar trabajador" onclick="confirmDelete({{ $worker->id }})">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                    @endforeach
-                </x-adminlte-datatable>
-            </x-adminlte-card>
         </div>
-    </div>
+    @else
+        <!-- Título mejorado con HTML puro -->
+        <div class="card-header bg-gradient-primary text-white text-center py-3 mb-4">
+            <h2 class="mb-0">TRABAJADORES</h2>
+            <div class="mt-2">
+                <span class="ml-2"><i class="fas fa-users mr-1"></i> Gestión de Trabajadores</span>
+                <span class="badge badge-light">{{ $workers->count() }} Trabajadores</span>
+            </div>
+        </div>
+
+        @if (session('success'))
+            <x-adminlte-alert theme="success" id="success-alert" title="Éxito" dismissable>
+                {{ session('success') }}
+            </x-adminlte-alert>
+        @elseif (session('error'))
+            <x-adminlte-alert theme="danger" id="error-alert" title="Error" dismissable>
+                {{ session('error') }}
+            </x-adminlte-alert>
+        @endif
+
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="mb-3 text-right">
+                    @can('crear trabajadores')
+                        <a href="{{ route('workers.create') }}" class="btn btn-sm btn-success">
+                            <i class="fas fa-plus mr-2"></i> Crear Trabajador
+                        </a>
+                    @endcan
+                </div>
+
+                <x-adminlte-card theme="dark" header-class="bg-gradient-dark text-white" title="Trabajadores Registrados">
+                    @php
+                        $heads = [
+                            ['label' => 'ID', 'width' => 5],
+                            ['label' => 'DNI', 'width' => 10],
+                            ['label' => 'Nombre', 'width' => 15],
+                            ['label' => 'Apellido Paterno', 'width' => 15],
+                            ['label' => 'Apellido Materno', 'width' => 15],
+                            ['label' => 'Correo', 'width' => 20],
+                            ['label' => 'Teléfono', 'width' => 10],
+                            ['label' => 'Oficina', 'width' => 10],
+                            ['label' => 'Cargo', 'width' => 10],
+                            ['label' => 'Contrato', 'width' => 10],
+                            ['label' => 'Estado', 'width' => 10],
+                            ['label' => 'Acciones', 'no-export' => true, 'width' => 15],
+                        ];
+
+                        $config = [
+                            'language' => [
+                                'url' => asset('/assets/js/es-ES.json'),
+                            ],
+                            'responsive' => true,
+                            'autoWidth' => false,
+                            'paging' => true,
+                            'searching' => true,
+                            'ordering' => true,
+                            'pageLength' => 10,
+                        ];
+                    @endphp
+
+                    <x-adminlte-datatable id="table1" :heads="$heads" :config="$config" striped hoverable bordered sm>
+                        @foreach ($workers as $worker)
+                            <tr>
+                                <td>{{ $worker->id }}</td>
+                                <td>{{ $worker->dni }}</td>
+                                <td>{{ $worker->first_name }}</td>
+                                <td>{{ $worker->last_name_paternal }}</td>
+                                <td>{{ $worker->last_name_maternal }}</td>
+                                <td>{{ $worker->email }}</td>
+                                <td>{{ $worker->phone ?? 'No asignado' }}</td>
+                                <td>{{ $worker->office->name ?? 'Sin oficina' }}</td>
+                                <td>{{ $worker->jobPosition->name ?? 'Sin cargo' }}</td>
+                                <td>{{ $worker->contractType->name ?? 'Sin tipo de contrato' }}</td>
+                                <td>
+                                    <span style="color: {{ $worker->status ? 'green' : 'red' }}; font-weight: bold;">
+                                        {{ $worker->status ? 'Activo' : 'Inactivo' }}
+                                    </span>
+                                </td>
+                                <td class="text-center">
+                                    <div class="d-flex justify-content-center gap-2">
+                                        <!-- Ver -->
+                                        @can('ver trabajadores')
+                                            <a href="{{ route('workers.show', $worker->id) }}"
+                                            class="btn btn-sm btn-outline-info shadow-sm mx-1" title="Ver detalles del trabajador">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                        @endcan
+
+                                        <!-- Editar -->
+                                        @can('actualizar trabajadores')
+                                            <a href="{{ route('workers.edit', $worker->id) }}"
+                                            class="btn btn-sm btn-outline-primary shadow-sm mx-1" title="Editar trabajador">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                        @endcan
+
+                                        <!-- Eliminar -->
+                                        @can('eliminar trabajadores')
+                                            <form id="deleteForm{{ $worker->id }}" class="d-inline" method="POST"
+                                                action="{{ route('workers.destroy', $worker->id) }}">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="button" class="btn btn-sm btn-outline-danger shadow-sm mx-1"
+                                                        title="Eliminar trabajador" onclick="confirmDelete({{ $worker->id }})">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        @endcan
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </x-adminlte-datatable>
+                </x-adminlte-card>
+            </div>
+        </div>
+    @endcannot
 </div>
 @stop
 
