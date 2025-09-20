@@ -459,7 +459,7 @@ return [
 
         [
             'text'       => 'Manual del Usuario',
-            'route'      => 'manual-usuario.index',
+            'route'      => 'user_manuals.index',
             'icon'       => 'fas fa-book',
             'icon_color' => 'info',
             'classes'    => 'text-white',
@@ -467,22 +467,19 @@ return [
         ],
 
         [
-            'text'       => 'Soporte Técnico',
-            'url'        => 'mailto:soporte@jangas.gob.pe',
-            'icon'       => 'fas fa-headset',
-            'icon_color' => 'success',
-            'classes'    => 'text-white',
-            // Sin permiso específico - todos pueden contactar soporte
-        ],
-
-        [
-            'text'       => 'Acerca del Sistema',
-            'route'      => 'about',
-            'icon'       => 'fas fa-info-circle',
-            'icon_color' => 'warning',
-            'classes'    => 'text-white',
-            // Sin permiso específico - información pública
-        ],
+    'text' => 'Soporte Técnico',
+    'route' => 'support',
+    'icon' => 'fas fa-headset',
+    'icon_color' => 'success',
+    'classes' => 'text-white',
+],
+[
+    'text' => 'Acerca del Sistema',
+    'route' => 'about',
+    'icon' => 'fas fa-info-circle',
+    'icon_color' => 'warning',
+    'classes' => 'text-white',
+],
     ],
 
 

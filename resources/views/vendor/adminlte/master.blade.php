@@ -9,13 +9,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <meta name="author" content="Winner Systems Corporation S.A.C.">
+    <meta name="company" content="Winner Systems">
+    <meta name="developer" content="Winner Systems Corporation S.A.C. - RUC: 20613731335">
+    <meta name="contact" content="info@winner-systems.com">
+    <meta name="website" content="https://www.winner-systems.com">
+
     {{-- Custom Meta Tags --}}
     @yield('meta_tags')
 
     {{-- Title --}}
     <title>
         @yield('title_prefix', config('adminlte.title_prefix', ''))
-        @yield('title', config('adminlte.title', 'AdminLTE 3'))
+        @yield('title', config('adminlte.title', 'Sistema de Gestión Patrimonial'))
         @yield('title_postfix', config('adminlte.title_postfix', ''))
     </title>
 

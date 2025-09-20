@@ -115,7 +115,12 @@ class RolePermissionSeeder extends Seeder
             'crear otros activos',
             'actualizar otros activos',
             'eliminar otros activos',
-            //'asignar otros activos',            
+            //'asignar otros activos',    
+            
+            // Gestión de manuales de usuario
+            'view-manuals',  
+            'download-manuals',
+            
         ];
 
         $autoridadRole->syncPermissions($autoridadPermissions);
@@ -150,6 +155,10 @@ class RolePermissionSeeder extends Seeder
             'crear activos de la empresa',
             'actualizar activos de la empresa',
             'eliminar activos de la empresa',
+
+            // Gestión de manuales de usuario
+            'view-manuals',  
+            'download-manuals',
         ];
 
         $usuarioRole->syncPermissions($usuarioPermissions);

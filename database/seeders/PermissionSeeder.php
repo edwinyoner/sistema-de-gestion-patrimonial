@@ -116,6 +116,11 @@ class PermissionSeeder extends Seeder
             'crear otros activos',
             'actualizar otros activos',
             'eliminar otros activos',
+
+            // Gestión de manuales de usuario
+            'manage-manuals',
+            'view-manuals',  
+            'download-manuals',
         ];
 
         foreach ($permissions as $permission) {
