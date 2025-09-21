@@ -61,9 +61,9 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
 
 
     Route::resource('user-manuals', UserManualController::class)->names('user_manuals');
-    Route::get('/user-manuals/{manual}/download', [UserManualController::class, 'download'])->name('user_manuals.download');
-    Route::get('/user-manuals/{manual}/view', [UserManualController::class, 'view'])->name('user_manuals.view');
-    Route::patch('/user-manuals/{manual}/toggle-status', [UserManualController::class, 'toggleStatus'])->name('user_manuals.toggle-status');
+    Route::get('/user-manuals/{user_manual}/download', [UserManualController::class, 'download'])->name('user_manuals.download');
+    Route::get('/user-manuals/{user_manual}/view', [UserManualController::class, 'view'])->name('user_manuals.view');
+    Route::patch('/user-manuals/{user_manual}/toggle-status', [UserManualController::class, 'toggleStatus'])->name('user_manuals.toggle-status');
 
  
     Route::get('/support', [StaticPageController::class, 'support'])->name('support');

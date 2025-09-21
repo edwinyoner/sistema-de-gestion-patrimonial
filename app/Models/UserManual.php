@@ -10,6 +10,8 @@ class UserManual extends Model
 {
     use HasFactory;
 
+    protected $table = 'user_manuals';
+
     protected $fillable = [
         'title',
         'description',

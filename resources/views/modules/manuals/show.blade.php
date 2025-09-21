@@ -78,10 +78,10 @@
                         <div class="mb-4">
                             <h6><i class="fas fa-eye text-info mr-2"></i>Vista Previa</h6>
                             <div class="pdf-preview border rounded">
-                                <iframe src="{{ route('manual-usuario.view', $manual) }}" width="100%" height="600px"
+                                <iframe src="{{ route('user_manuals.view', $manual) }}" width="100%" height="600px"
                                     style="border: none;">
                                     <p>Su navegador no soporta la vista previa de PDF.
-                                        <a href="{{ route('manual-usuario.download', $manual) }}">Descargue el archivo
+                                        <a href="{{ route('user_manuals.download', $manual) }}">Descargue el archivo
                                             aquí</a>.
                                     </p>
                                 </iframe>
@@ -97,22 +97,22 @@
             <x-adminlte-card title="Acciones" theme="success" icon="fas fa-tools">
                 <div class="action-buttons">
                     @if($manual->is_viewable)
-                        <a href="{{ route('manual-usuario.view', $manual) }}" target="_blank"
+                        <a href="{{ route('user_manuals.view', $manual) }}" target="_blank"
                             class="btn btn-info btn-block mb-2">
                             <i class="fas fa-eye mr-2"></i>Ver en Nueva Ventana
                         </a>
                     @endif
 
-                    <a href="{{ route('manual-usuario.download', $manual) }}" class="btn btn-success btn-block mb-2">
+                    <a href="{{ route('user_manuals.download', $manual) }}" class="btn btn-success btn-block mb-2">
                         <i class="fas fa-download mr-2"></i>Descargar Archivo
                     </a>
 
                     @can('manage-manuals')
-                        <a href="{{ route('manual-usuario.edit', $manual) }}" class="btn btn-warning btn-block mb-2">
+                        <a href="{{ route('user_manuals.edit', $manual) }}" class="btn btn-warning btn-block mb-2">
                             <i class="fas fa-edit mr-2"></i>Editar Manual
                         </a>
 
-                        <form action="{{ route('manual-usuario.toggle-status', $manual) }}" method="POST" class="mb-2">
+                        <form action="{{ route('user_manuals.toggle-status', $manual) }}" method="POST" class="mb-2">
                             @csrf
                             @method('PATCH')
                             <button type="submit"
@@ -122,7 +122,7 @@
                             </button>
                         </form>
 
-                        <form action="{{ route('manual-usuario.destroy', $manual) }}" method="POST">
+                        <form action="{{ route('user_manuals.destroy', $manual) }}" method="POST">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger btn-block"
@@ -134,7 +134,7 @@
 
                     <hr>
 
-                    <a href="{{ route('manual-usuario.index') }}" class="btn btn-outline-secondary btn-block">
+                    <a href="{{ route('user_manuals.index') }}" class="btn btn-outline-secondary btn-block">
                         <i class="fas fa-arrow-left mr-2"></i>Volver a la Lista
                     </a>
                 </div>

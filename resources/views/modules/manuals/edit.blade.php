@@ -9,7 +9,8 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <x-adminlte-card title="Editar Manual: {{ $manual->title }}" theme="warning" icon="fas fa-edit">
-                <form action="{{ route('manual-usuario.update', $manual) }}" method="POST"
+                
+                <form action="{{ route('user_manuals.update', $manual) }}" method="POST" enctype="multipart/form-data">
                     enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
@@ -76,7 +77,7 @@
                                                 {{ $manual->created_at->format('d/m/Y H:i') }}</small>
                                         </div>
                                         <div class="ml-auto">
-                                            <a href="{{ route('manual-usuario.download', $manual) }}"
+                                            <a href="{{ route('user_manuals.download', $manual) }}"
                                                 class="btn btn-sm btn-outline-success">
                                                 <i class="fas fa-download mr-1"></i>Descargar
                                             </a>
@@ -112,7 +113,7 @@
                     <div class="row mt-4">
                         <div class="col-12">
                             <div class="d-flex justify-content-between">
-                                <a href="{{ route('manual-usuario.index') }}" class="btn btn-secondary">
+                                <a href="{{ route('user_manuals.index') }}" class="btn btn-secondary">
                                     <i class="fas fa-arrow-left mr-2"></i>Cancelar
                                 </a>
                                 <button type="submit" class="btn btn-warning">

@@ -117,6 +117,12 @@ class PermissionSeeder extends Seeder
             'actualizar otros activos',
             'eliminar otros activos',
 
+            // Reportes
+            'ver reportes',
+            'crear reportes',
+            'actualizar reportes',
+            'eliminar reportes',
+
             // Gestión de manuales de usuario
             'manage-manuals',
             'view-manuals',  

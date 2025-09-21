@@ -386,7 +386,7 @@ return [
                     'icon_color' => 'danger',
                     'classes'    => 'text-danger',
                     'can' => 'ver hardware',
-                    'active' => ['asset-hardwares*'], 
+                    'active' => ['asset-hardwares*'],
                 ],
                 [
                     'text' => 'Software',
@@ -431,9 +431,24 @@ return [
                     'icon_color' => 'danger',
                     'classes'    => 'text-danger',
                     'can' => 'ver otros activos',
-                    'active' => ['asset-others*'], 
+                    'active' => ['asset-others*'],
                 ]
             ],
+        ],
+        // REPORTES
+        [
+            'header' => 'REPORTES',
+            'classes'    => 'text-white text-bold text-center',
+        ],
+
+        [
+            'text'       => 'Reportes Generales',
+            //'route'      => 'reports.index',
+            'icon'       => 'fas fa-chart-pie',
+            'icon_color' => 'primary',
+            'classes'    => 'text-white',
+            //'can'        => 'ver reportes',
+            'active'     => ['reports*'],
         ],
 
         // CONFIGURACIÓN
@@ -463,23 +478,26 @@ return [
             'icon'       => 'fas fa-book',
             'icon_color' => 'info',
             'classes'    => 'text-white',
+            'active' => ['user-manuals*'],
             // Sin permiso específico - todos pueden acceder al manual
         ],
 
         [
-    'text' => 'Soporte Técnico',
-    'route' => 'support',
-    'icon' => 'fas fa-headset',
-    'icon_color' => 'success',
-    'classes' => 'text-white',
-],
-[
-    'text' => 'Acerca del Sistema',
-    'route' => 'about',
-    'icon' => 'fas fa-info-circle',
-    'icon_color' => 'warning',
-    'classes' => 'text-white',
-],
+            'text' => 'Soporte Técnico',
+            'route' => 'support',
+            'icon' => 'fas fa-headset',
+            'icon_color' => 'success',
+            'classes' => 'text-white',
+            'active' => ['support*'],
+        ],
+        [
+            'text' => 'Acerca del Sistema',
+            'route' => 'about',
+            'icon' => 'fas fa-info-circle',
+            'icon_color' => 'warning',
+            'classes' => 'text-white',
+            'active' => ['about*'],
+        ],
     ],
 
 

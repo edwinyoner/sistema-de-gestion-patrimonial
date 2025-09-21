@@ -14,12 +14,17 @@ class UserManualController extends Controller
     {
         // Middleware de autenticación para todas las rutas
         $this->middleware('auth');
-        
+
         // Middleware de permisos específicos
         $this->middleware('permission:view-manuals')->only(['index', 'show']);
         $this->middleware('permission:download-manuals')->only(['download', 'view']);
         $this->middleware('permission:manage-manuals')->only([
-            'create', 'store', 'edit', 'update', 'destroy', 'toggleStatus'
+            'create',
+            'store',
+            'edit',
+            'update',
+            'destroy',
+            'toggleStatus'
         ]);
     }
 
@@ -32,7 +37,7 @@ class UserManualController extends Controller
         }
 
         $query = UserManual::active()->latest()->with('uploader');
-        
+
         // Si no es admin, solo mostrar manuales activos
         if (!Auth::user()->can('manage-manuals')) {
             $query->where('is_active', true);
@@ -44,17 +49,13 @@ class UserManualController extends Controller
         return view('modules.manuals.index', compact('manuals', 'canManage'));
     }
 
-    public function show(UserManual $manual)
+    public function show($id)
     {
-        // Verificar que el manual esté activo para usuarios no-admin
-        if (!$manual->is_active && !Auth::user()->can('manage-manuals')) {
-            abort(404, 'Manual no encontrado.');
-        }
-
+        $manual = UserManual::with('uploader')->findOrFail($id);
         return view('modules.manuals.show', compact('manual'));
     }
 
-    public function download(UserManual $manual)
+    public function download(UserManual $user_manual)
     {
         // Verificar permisos de descarga
         if (!Auth::user()->can('download-manuals')) {
@@ -62,21 +63,25 @@ class UserManualController extends Controller
         }
 
         // Verificar que el manual esté activo para usuarios no-admin
-        if (!$manual->is_active && !Auth::user()->can('manage-manuals')) {
+        if (
+            !$user_manual->is_active &&
+            !\Illuminate\Support\Facades\Gate::allows('manage-manuals')
+        ) {
             abort(404, 'Manual no encontrado.');
         }
 
-        if (!Storage::disk('private')->exists($manual->file_path)) {
+        if (!Storage::disk('private')->exists($user_manual->file_path)) {
             return redirect()->back()->with('error', 'Archivo no encontrado.');
         }
 
         // Registrar la descarga (opcional)
-        $this->logDownload($manual);
+        $this->logDownload($user_manual);
 
-        return Storage::disk('private')->download($manual->file_path, $manual->file_name);
+        $filePath = storage_path('app/private/' . $user_manual->file_path);
+        return response()->download($filePath, $user_manual->file_name);
     }
 
-    public function view(UserManual $manual)
+    public function view(UserManual $user_manual)
     {
         // Verificar permisos de visualización
         if (!Auth::user()->can('download-manuals')) {
@@ -84,24 +89,24 @@ class UserManualController extends Controller
         }
 
         // Solo PDFs son visualizables
-        if (!$manual->is_viewable) {
-            return redirect()->route('user_manuals.download', $manual);
+        if (!$user_manual->is_viewable) {
+            return redirect()->route('user_manuals.download', $user_manual);
         }
 
         // Verificar que el manual esté activo para usuarios no-admin
-        if (!$manual->is_active && !Auth::user()->can('manage-manuals')) {
+        if (!$user_manual->is_active && !Auth::user()->can('manage-manuals')) {
             abort(404, 'Manual no encontrado.');
         }
 
-        if (!Storage::disk('private')->exists($manual->file_path)) {
+        if (!Storage::disk('private')->exists($user_manual->file_path)) {
             return redirect()->back()->with('error', 'Archivo no encontrado.');
         }
 
-        $file = Storage::disk('private')->get($manual->file_path);
-        
+        $file = Storage::disk('private')->get($user_manual->file_path);
+
         return response($file, 200)
-            ->header('Content-Type', $manual->file_type)
-            ->header('Content-Disposition', 'inline; filename="' . $manual->file_name . '"');
+            ->header('Content-Type', $user_manual->file_type)
+            ->header('Content-Disposition', 'inline; filename="' . $user_manual->file_name . '"');
     }
 
     // Resto de métodos CRUD (solo para admins)
@@ -140,13 +145,16 @@ class UserManualController extends Controller
             ->with('success', 'Manual cargado exitosamente.');
     }
 
-    public function edit(UserManual $manual)
+    public function edit($id)
     {
+        $manual = UserManual::findOrFail($id);
         return view('modules.manuals.edit', compact('manual'));
     }
 
-    public function update(Request $request, UserManual $manual)
+    public function update(Request $request, $id)
     {
+        $manual = UserManual::findOrFail($id);
+
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string|max:1000',
@@ -163,8 +171,7 @@ class UserManualController extends Controller
         ];
 
         if ($request->hasFile('file')) {
-            // Eliminar archivo anterior
-            if (Storage::disk('private')->exists($manual->file_path)) {
+            if ($manual->file_path && Storage::disk('private')->exists($manual->file_path)) {
                 Storage::disk('private')->delete($manual->file_path);
             }
 
@@ -190,7 +197,7 @@ class UserManualController extends Controller
         if (Storage::disk('private')->exists($manual->file_path)) {
             Storage::disk('private')->delete($manual->file_path);
         }
-        
+
         $manual->delete();
 
         return redirect()->route('user_manuals.index')
@@ -200,7 +207,7 @@ class UserManualController extends Controller
     public function toggleStatus(UserManual $manual)
     {
         $manual->update(['is_active' => !$manual->is_active]);
-        
+
         $status = $manual->is_active ? 'activado' : 'desactivado';
         return redirect()->back()->with('success', "Manual {$status} exitosamente.");
     }

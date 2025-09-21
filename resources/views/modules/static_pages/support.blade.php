@@ -56,7 +56,7 @@
     </div>
 
     <!-- Opciones de Contacto -->
-    <div class="row mb-4">
+    <div class="row mb-4 contact-cards-row">
         <div class="col-md-4">
             <x-adminlte-card title="Contacto Winner Systems" theme="primary" icon="fas fa-headset">
                 <div class="contact-method">
@@ -301,7 +301,7 @@
     </div>
 
     <!-- Recursos Adicionales -->
-    <div class="row">
+    <div class="row resources-cards-row">
         <div class="col-md-6">
             <x-adminlte-card title="Recursos de Ayuda" theme="secondary" icon="fas fa-book">
                 <div class="resources-list">
@@ -594,6 +594,106 @@
                 margin: 0 0 10px 0;
             }
         }
+
+        /* Altura igual para las 3 tarjetas de contacto */
+        .contact-cards-row {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .contact-cards-row .col-md-4 {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .contact-cards-row .card {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .contact-cards-row .card-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .contact-cards-row .contact-method {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* Altura igual para las 2 tarjetas de recursos */
+        .resources-cards-row {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .resources-cards-row .col-md-6 {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .resources-cards-row .card {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .resources-cards-row .card-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .resources-cards-row .resources-list,
+        .resources-cards-row .system-status {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Ajustes para que el contenido se distribuya bien */
+        .contact-method .contact-info {
+            flex: 1;
+        }
+
+        .contact-method .btn {
+            margin-top: auto;
+        }
+
+        /* Responsive: En móviles no aplicar altura igual */
+        @media (max-width: 768px) {
+
+            .contact-cards-row,
+            .resources-cards-row {
+                display: block;
+            }
+
+            .contact-cards-row .col-md-4,
+            .resources-cards-row .col-md-6 {
+                display: block;
+            }
+
+            .contact-cards-row .card,
+            .resources-cards-row .card {
+                display: block;
+                margin-bottom: 1rem;
+            }
+
+            .contact-cards-row .card-body,
+            .resources-cards-row .card-body {
+                display: block;
+            }
+
+            .contact-cards-row .contact-method,
+            .resources-cards-row .resources-list,
+            .resources-cards-row .system-status {
+                display: block;
+            }
+        }
     </style>
 @endpush
 
@@ -624,31 +724,31 @@
             Swal.fire({
                 title: 'Crear Ticket de Soporte',
                 html: `
-                <div class="text-left">
-                    <div class="form-group">
-                        <label>Tipo de Problema:</label>
-                        <select class="form-control" id="ticketType">
-                            <option value="technical">Problema Técnico</option>
-                            <option value="access">Problema de Acceso</option>
-                            <option value="feature">Solicitud de Funcionalidad</option>
-                            <option value="other">Otro</option>
-                        </select>
+                    <div class="text-left">
+                        <div class="form-group">
+                            <label>Tipo de Problema:</label>
+                            <select class="form-control" id="ticketType">
+                                <option value="technical">Problema Técnico</option>
+                                <option value="access">Problema de Acceso</option>
+                                <option value="feature">Solicitud de Funcionalidad</option>
+                                <option value="other">Otro</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Prioridad:</label>
+                            <select class="form-control" id="ticketPriority">
+                                <option value="low">Baja</option>
+                                <option value="medium">Media</option>
+                                <option value="high">Alta</option>
+                                <option value="urgent">Urgente</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Descripción del Problema:</label>
+                            <textarea class="form-control" id="ticketDescription" rows="4" placeholder="Describe detalladamente tu problema o consulta..."></textarea>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label>Prioridad:</label>
-                        <select class="form-control" id="ticketPriority">
-                            <option value="low">Baja</option>
-                            <option value="medium">Media</option>
-                            <option value="high">Alta</option>
-                            <option value="urgent">Urgente</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Descripción del Problema:</label>
-                        <textarea class="form-control" id="ticketDescription" rows="4" placeholder="Describe detalladamente tu problema o consulta..."></textarea>
-                    </div>
-                </div>
-            `,
+                `,
                 confirmButtonText: 'Crear Ticket',
                 cancelButtonText: 'Cancelar',
                 showCancelButton: true,
@@ -677,17 +777,17 @@
                     // Crear email con información del ticket
                     const emailBody = `Nuevo Ticket de Soporte
 
-    Número de Ticket: ${ticketNumber}
-    Tipo: ${result.value.type}
-    Prioridad: ${result.value.priority}
-    Usuario: {{ Auth::user()->name ?? 'Usuario' }}
-    Email: {{ Auth::user()->email ?? 'email@example.com' }}
+        Número de Ticket: ${ticketNumber}
+        Tipo: ${result.value.type}
+        Prioridad: ${result.value.priority}
+        Usuario: {{ Auth::user()->name ?? 'Usuario' }}
+        Email: {{ Auth::user()->email ?? 'email@example.com' }}
 
-    Descripción:
-    ${result.value.description}
+        Descripción:
+        ${result.value.description}
 
-    Fecha: ${new Date().toLocaleString()}
-    `;
+        Fecha: ${new Date().toLocaleString()}
+        `;
 
                     const mailtoLink = `mailto:soporte@jangas.gob.pe?subject=Ticket ${ticketNumber}&body=${encodeURIComponent(emailBody)}`;
                     window.location.href = mailtoLink;
@@ -695,10 +795,10 @@
                     Swal.fire({
                         title: '¡Ticket Creado!',
                         html: `
-                        <p>Tu ticket ha sido creado exitosamente.</p>
-                        <p><strong>Número:</strong> <code>${ticketNumber}</code></p>
-                        <p>Recibirás una confirmación por email en breve.</p>
-                    `,
+                            <p>Tu ticket ha sido creado exitosamente.</p>
+                            <p><strong>Número:</strong> <code>${ticketNumber}</code></p>
+                            <p>Recibirás una confirmación por email en breve.</p>
+                        `,
                         icon: 'success',
                         confirmButtonText: 'Entendido'
                     });
@@ -711,21 +811,21 @@
             Swal.fire({
                 title: 'Chat de Soporte',
                 html: `
-                <div class="text-left">
-                    <div class="chat-container" style="background: #f8f9fa; padding: 15px; border-radius: 8px; height: 200px; overflow-y: auto;">
-                        <div class="chat-message">
-                            <strong>Soporte:</strong> ¡Hola! ¿En qué puedo ayudarte hoy?
+                    <div class="text-left">
+                        <div class="chat-container" style="background: #f8f9fa; padding: 15px; border-radius: 8px; height: 200px; overflow-y: auto;">
+                            <div class="chat-message">
+                                <strong>Soporte:</strong> ¡Hola! ¿En qué puedo ayudarte hoy?
+                            </div>
                         </div>
+                        <div class="form-group mt-3">
+                            <input type="text" class="form-control" id="chatMessage" placeholder="Escribe tu mensaje...">
+                        </div>
+                        <small class="text-muted">
+                            <i class="fas fa-info-circle mr-1"></i>
+                            El chat estará disponible próximamente. Por ahora, puedes contactarnos por email o teléfono.
+                        </small>
                     </div>
-                    <div class="form-group mt-3">
-                        <input type="text" class="form-control" id="chatMessage" placeholder="Escribe tu mensaje...">
-                    </div>
-                    <small class="text-muted">
-                        <i class="fas fa-info-circle mr-1"></i>
-                        El chat estará disponible próximamente. Por ahora, puedes contactarnos por email o teléfono.
-                    </small>
-                </div>
-            `,
+                `,
                 confirmButtonText: 'Cerrar',
                 showCancelButton: false,
                 width: '500px'
@@ -733,7 +833,4 @@
         }
 
     </script>
-
-    <!-- SweetAlert2 -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @endpush
