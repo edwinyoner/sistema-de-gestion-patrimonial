@@ -443,11 +443,11 @@ return [
 
         [
             'text'       => 'Reportes Generales',
-            //'route'      => 'reports.index',
-            'icon'       => 'fas fa-chart-pie',
-            'icon_color' => 'primary',
+            'route'      => 'reports.index',
+            'icon'       => 'fas fa-chart-bar',
+            'icon_color' => 'info',
             'classes'    => 'text-white',
-            //'can'        => 'ver reportes',
+            'can'        => 'VER REPORTES',
             'active'     => ['reports*'],
         ],
 

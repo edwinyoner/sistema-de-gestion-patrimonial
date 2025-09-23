@@ -18,6 +18,7 @@ use App\Http\Controllers\AssetSoftwareController;
 use App\Http\Controllers\AssetToolController;
 use App\Http\Controllers\AssetOtherController;
 use App\Http\Controllers\SoftwareTypeController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\StaticPageController;
 use App\Http\Controllers\UserManualController;
 use App\Http\Controllers\DashboardController;
@@ -58,6 +59,18 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
 
     Route::post('/send-credentials', [UserController::class, 'sendCredentials'])->name('send-credentials');
     Route::post('/update-password-and-send', [UserController::class, 'updatePasswordAndSend'])->name('update-password-and-send');
+
+    // Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+    // Route::get('/reports/{table}', [ReportController::class, 'showFilters'])->name('reports');
+    // Route::post('/reports/{table}', [ReportController::class, 'generate'])->name('reports.post');
+
+    Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+    Route::get('/{type}/filters', [ReportController::class, 'filters'])->name('reports.filters');
+    Route::post('/{type}/generate', [ReportController::class, 'generate'])->name('reports.generate');
+    
+    Route::post('/{type}/export/pdf', [ReportController::class, 'exportPdf'])->name('reports.export.pdf');
+    Route::post('/{type}/export/excel', [ReportController::class, 'exportExcel'])->name('reports.export.excel');
+    
 
 
     Route::resource('user-manuals', UserManualController::class)->names('user_manuals');
