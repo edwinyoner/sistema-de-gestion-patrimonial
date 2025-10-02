@@ -1,4 +1,3 @@
-```markdown
 # 📋 Sistema de Gestión Patrimonial
 
 Sistema integral para la administración de activos, inventario y recursos patrimoniales desarrollado para instituciones públicas.
@@ -131,7 +130,7 @@ Acceder a: `http://localhost:8000`
 ## 👤 Credenciales por Defecto
 
 ```
-Usuario: admin@dominio.com
+Usuario: admin@example.com
 Contraseña: password
 ```
 
@@ -350,11 +349,8 @@ estrictamente prohibido y puede resultar en acciones legales.
 
 ---
 
-## 🌟 Desarrollado con ❤️ por Winner Systems
+## Desarrollado por Winner Systems
 
 **Transformación Digital para Municipalidades**
 
 Bolognesi, Ancash - Perú
-```
-
-Este README es profesional, completo y específico para tu proyecto. Incluye toda la información necesaria para que cualquier desarrollador pueda instalar y entender el sistema, además de reflejar correctamente la autoría de Winner Systems Corporation.
