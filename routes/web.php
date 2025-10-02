@@ -60,10 +60,6 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::post('/send-credentials', [UserController::class, 'sendCredentials'])->name('send-credentials');
     Route::post('/update-password-and-send', [UserController::class, 'updatePasswordAndSend'])->name('update-password-and-send');
 
-    // Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
-    // Route::get('/reports/{table}', [ReportController::class, 'showFilters'])->name('reports');
-    // Route::post('/reports/{table}', [ReportController::class, 'generate'])->name('reports.post');
-
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
     Route::get('/{type}/filters', [ReportController::class, 'filters'])->name('reports.filters');
     Route::post('/{type}/generate', [ReportController::class, 'generate'])->name('reports.generate');

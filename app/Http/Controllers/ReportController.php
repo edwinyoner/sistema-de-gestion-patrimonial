@@ -1,11 +1,21 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\{
-    AssetFurniture, AssetHardware, AssetMachinery, AssetOther, 
-    AssetSoftware, AssetTool, CompanyAsset, JobPosition, 
-    Office, User, Worker, ContractType
+    AssetFurniture,
+    AssetHardware,
+    AssetMachinery,
+    AssetOther,
+    AssetSoftware,
+    AssetTool,
+    CompanyAsset,
+    JobPosition,
+    Office,
+    User,
+    Worker,
+    ContractType
 };
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ReportExport;
@@ -31,7 +41,7 @@ class ReportController extends Controller
     public function filters($type)
     {
         $reportConfig = $this->getReportConfig($type);
-        
+
         if (!$reportConfig) {
             return redirect()->back()->with('error', 'Tipo de reporte no válido.');
         }
@@ -43,7 +53,7 @@ class ReportController extends Controller
     public function generate(Request $request, $type)
     {
         $reportConfig = $this->getReportConfig($type);
-        
+
         if (!$reportConfig) {
             return redirect()->back()->with('error', 'Tipo de reporte no válido.');
         }
@@ -64,7 +74,7 @@ class ReportController extends Controller
     public function exportPdf(Request $request, $type)
     {
         $this->middleware('permission:exportar reportes');
-        
+
         $reportConfig = $this->getReportConfig($type);
         $filters = $this->validateFilters($request, $type);
         $data = $this->getReportData($type, $filters);
@@ -82,7 +92,7 @@ class ReportController extends Controller
         ]);
 
         $filename = "reporte_{$type}_" . now()->format('Y-m-d_H-i-s') . ".pdf";
-        
+
         return $pdf->download($filename);
     }
 
@@ -90,7 +100,7 @@ class ReportController extends Controller
     public function exportExcel(Request $request, $type)
     {
         $this->middleware('permission:exportar reportes');
-        
+
         $reportConfig = $this->getReportConfig($type);
         $filters = $this->validateFilters($request, $type);
         $data = $this->getReportData($type, $filters);
@@ -104,69 +114,13 @@ class ReportController extends Controller
     private function getReportTypes()
     {
         return [
-            'mobiliarios' => [
-                'name' => 'Mobiliarios',
-                'description' => 'Reporte completo de mobiliario institucional',
-                'icon' => 'fas fa-couch',
-                'color' => 'primary',
-                'table' => 'asset_furnitures',
-                'model' => AssetFurniture::class
-            ],
-            'hardware' => [
-                'name' => 'Hardware',
-                'description' => 'Equipos informáticos y tecnológicos',
-                'icon' => 'fas fa-desktop',
-                'color' => 'info',
-                'table' => 'asset_hardwares',
-                'model' => AssetHardware::class
-            ],
-            'maquinarias' => [
-                'name' => 'Maquinarias',
-                'description' => 'Maquinaria pesada y equipos especializados',
-                'icon' => 'fas fa-tractor',
-                'color' => 'warning',
-                'table' => 'asset_machineries',
-                'model' => AssetMachinery::class
-            ],
-            'otros_activos' => [
-                'name' => 'Otros Activos',
-                'description' => 'Activos diversos no clasificados',
-                'icon' => 'fas fa-layer-group',
-                'color' => 'secondary',
-                'table' => 'asset_others',
-                'model' => AssetOther::class
-            ],
-            'software' => [
-                'name' => 'Software',
-                'description' => 'Licencias y aplicaciones informáticas',
-                'icon' => 'fas fa-laptop-code',
+            'usuarios' => [
+                'name' => 'Usuarios',
+                'description' => 'Usuarios del sistema y permisos',
+                'icon' => 'fas fa-users',
                 'color' => 'success',
-                'table' => 'asset_softwares',
-                'model' => AssetSoftware::class
-            ],
-            'herramientas' => [
-                'name' => 'Herramientas',
-                'description' => 'Herramientas de trabajo y mantenimiento',
-                'icon' => 'fas fa-tools',
-                'color' => 'danger',
-                'table' => 'asset_tools',
-                'model' => AssetTool::class
-            ],
-            'activos_generales' => [
-                'name' => 'Activos Generales',
-                'description' => 'Inventario general de todos los activos',
-                'icon' => 'fas fa-clipboard-list',
-                'color' => 'dark',
-                'table' => 'company_assets',
-                'model' => CompanyAsset::class
-            ],
-            'cargos' => [
-                'name' => 'Cargos',
-                'description' => 'Posiciones y cargos institucionales',
-                'icon' => 'fas fa-briefcase',
-                'color' => 'primary',
-                'table' => 'job_positions',
-                'model' => JobPosition::class
+                'table' => 'users',
+                'model' => User::class
             ],
             'oficinas' => [
                 'name' => 'Oficinas',
@@ -176,13 +130,21 @@ class ReportController extends Controller
                 'table' => 'offices',
                 'model' => Office::class
             ],
-            'usuarios' => [
-                'name' => 'Usuarios',
-                'description' => 'Usuarios del sistema y permisos',
-                'icon' => 'fas fa-users',
-                'color' => 'success',
-                'table' => 'users',
-                'model' => User::class
+            'cargos' => [
+                'name' => 'Cargos',
+                'description' => 'Posiciones y cargos institucionales',
+                'icon' => 'fas fa-briefcase',
+                'color' => 'primary',
+                'table' => 'job_positions',
+                'model' => JobPosition::class
+            ],
+            'tipos_contrato' => [
+                'name' => 'Tipos de Contrato',
+                'description' => 'Modalidades de contratación',
+                'icon' => 'fas fa-file-contract',
+                'color' => 'secondary',
+                'table' => 'contract_types',
+                'model' => ContractType::class
             ],
             'trabajadores' => [
                 'name' => 'Trabajadores',
@@ -192,13 +154,61 @@ class ReportController extends Controller
                 'table' => 'workers',
                 'model' => Worker::class
             ],
-            'tipos_contrato' => [
-                'name' => 'Tipos de Contrato',
-                'description' => 'Modalidades de contratación',
-                'icon' => 'fas fa-file-contract',
+            'activos_generales' => [
+                'name' => 'Activos Generales',
+                'description' => 'Inventario general de todos los activos',
+                'icon' => 'fas fa-clipboard-list',
+                'color' => 'dark',
+                'table' => 'company_assets',
+                'model' => CompanyAsset::class
+            ],
+            'hardware' => [
+                'name' => 'Hardware',
+                'description' => 'Equipos informáticos y tecnológicos',
+                'icon' => 'fas fa-desktop',
+                'color' => 'info',
+                'table' => 'asset_hardwares',
+                'model' => AssetHardware::class
+            ],
+            'software' => [
+                'name' => 'Software',
+                'description' => 'Licencias y aplicaciones informáticas',
+                'icon' => 'fas fa-laptop-code',
+                'color' => 'success',
+                'table' => 'asset_softwares',
+                'model' => AssetSoftware::class
+            ],
+            'mobiliarios' => [
+                'name' => 'Mobiliarios',
+                'description' => 'Reporte completo de mobiliario institucional',
+                'icon' => 'fas fa-couch',
+                'color' => 'primary',
+                'table' => 'asset_furnitures',
+                'model' => AssetFurniture::class
+            ],
+            'maquinarias' => [
+                'name' => 'Maquinarias',
+                'description' => 'Maquinaria pesada y equipos especializados',
+                'icon' => 'fas fa-tractor',
+                'color' => 'warning',
+                'table' => 'asset_machineries',
+                'model' => AssetMachinery::class
+            ],
+            'herramientas' => [
+                'name' => 'Herramientas',
+                'description' => 'Herramientas de trabajo y mantenimiento',
+                'icon' => 'fas fa-tools',
+                'color' => 'danger',
+                'table' => 'asset_tools',
+                'model' => AssetTool::class
+            ],
+            'otros_activos' => [
+                'name' => 'Otros Activos',
+                'description' => 'Activos diversos no clasificados',
+                'icon' => 'fas fa-layer-group',
                 'color' => 'secondary',
-                'table' => 'contract_types',
-                'model' => ContractType::class
+                'table' => 'asset_others',
+                'model' => AssetOther::class
             ]
         ];
     }
@@ -223,7 +233,7 @@ class ReportController extends Controller
 
         // Reglas específicas por tipo
         $specificRules = $this->getSpecificValidationRules($type);
-        
+
         return $request->validate(array_merge($baseRules, $specificRules));
     }
 
@@ -255,7 +265,7 @@ class ReportController extends Controller
     {
         $config = $this->getReportConfig($type);
         $model = $config['model'];
-        
+
         $query = $model::query();
 
         // Aplicar relaciones comunes
@@ -298,7 +308,7 @@ class ReportController extends Controller
         if (!empty($filters['date_from'])) {
             $query->where('created_at', '>=', $filters['date_from']);
         }
-        
+
         if (!empty($filters['date_to'])) {
             $query->where('created_at', '<=', $filters['date_to'] . ' 23:59:59');
         }
@@ -320,7 +330,7 @@ class ReportController extends Controller
         switch ($type) {
             case 'usuarios':
                 if (!empty($filters['role'])) {
-                    $query->whereHas('roles', function($q) use ($filters) {
+                    $query->whereHas('roles', function ($q) use ($filters) {
                         $q->where('name', $filters['role']);
                     });
                 }
@@ -352,6 +362,15 @@ class ReportController extends Controller
     // Datos de la empresa para reportes
     private function getCompanyData()
     {
+        $logoPath = public_path('assets/images/logo.png');
+        $logoBase64 = '';
+
+        if (file_exists($logoPath)) {
+            $type = pathinfo($logoPath, PATHINFO_EXTENSION);
+            $imageData = file_get_contents($logoPath);
+            $logoBase64 = 'data:image/' . $type . ';base64,' . base64_encode($imageData);
+        }
+
         return [
             'name' => 'Municipalidad Provincial de Yungay',
             'ruc' => '20123456789',
@@ -359,7 +378,7 @@ class ReportController extends Controller
             'phone' => '+51 (043) 39-3001',
             'email' => 'info@muniyungay.gob.pe',
             'website' => 'www.muniyungay.gob.pe',
-            'logo' => public_path('images/logo-municipalidad.png'),
+            'logo' => $logoBase64, // DEBE SER BASE64, NO LA RUTA
             'developed_by' => [
                 'name' => 'Winner Systems Corporation S.A.C.',
                 'ruc' => '20613731335',

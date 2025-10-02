@@ -437,7 +437,7 @@ return [
         ],
         // REPORTES
         [
-            'header' => 'REPORTES',
+            'header' => 'REPORTES Y ANALÍTICAS',
             'classes'    => 'text-white text-bold text-center',
         ],
 
@@ -447,7 +447,7 @@ return [
             'icon'       => 'fas fa-chart-bar',
             'icon_color' => 'info',
             'classes'    => 'text-white',
-            'can'        => 'VER REPORTES',
+            'can'        => 'ver reportes',
             'active'     => ['reports*'],
         ],
 

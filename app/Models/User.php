@@ -12,6 +12,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -59,7 +60,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'status' => 'boolean',
     ];
 
-   protected $dates = [
+    protected $dates = [
         'deleted_at',
     ];
 
@@ -89,17 +90,26 @@ class User extends Authenticatable implements MustVerifyEmail
         return 'user/profile';
     }
 
-    public function setNameAttribute($value)
+    /*
+    @Author: Edwin Yoner
+    @Date: 2025-10-01
+    @Change: Mutador y accesor para que el atributo name
+            siempre se guarde y se muestre con formato título
+            (Primera letra en mayúscula de cada palabra).
+    */
+    protected function name(): Attribute
     {
-        $this->attributes['name'] = strtoupper($value);
+        return Attribute::make(
+            get: fn($value) => $value ? ucwords(strtolower($value)) : null,
+            set: fn($value) => $value ? ucwords(strtolower($value)) : null,
+        );
     }
 
-    
     /**
      * Send the email verification notification.
      * Sobrescribimos para evitar envío automático
      */
-    
+
     public function sendEmailVerificationNotification()
     {
         // No hacer nada - el correo se envía desde el controlador
