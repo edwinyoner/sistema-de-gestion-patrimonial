@@ -21,6 +21,7 @@ return new class extends Migration
             $table->date('acquisition_date')->nullable()->comment('Fecha de adquisición del activo');
             $table->date('inventory_date')->notNull()->comment('Fecha del inventario del activo');
             $table->string('photo_path', 255)->nullable()->comment('Ruta de la foto del activo, opcional');
+            $table->string('qr_code_path', 255)->nullable()->comment('Ruta del archivo QR del activo, opcional');
             $table->boolean('status')->default(true)->comment('Estado del activo: true (activo), false (inactivo)');
             $table->softDeletes()->comment('Fecha de eliminación lógica para soft deletes');
             $table->timestamps();

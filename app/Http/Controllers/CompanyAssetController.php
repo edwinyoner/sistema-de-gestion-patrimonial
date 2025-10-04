@@ -9,7 +9,7 @@ use App\Http\Requests\AssetSoftwareRequest;
 use App\Http\Requests\AssetMachineryRequest;
 use App\Http\Requests\AssetToolRequest;
 use App\Http\Requests\AssetOtherRequest;
-use App\Htrp\Requests\SoftwareTypeRequest;
+use App\Http\Requests\SoftwareTypeRequest; // Nota: Parece un typo, debería ser App\Http\Requests\SoftwareTypeRequest?
 use App\Models\CompanyAsset;
 use App\Models\AssetFurniture;
 use App\Models\AssetType;
@@ -89,6 +89,16 @@ class CompanyAssetController extends Controller
             // Crear el activo general
             $companyAsset = CompanyAsset::create(array_merge($validatedData, ['photo_path' => $photoPath]));
             Log::info('Activo general creado. ID: ' . $companyAsset->id);
+
+            // Generar QR code automáticamente
+            $companyAsset->generateQrCode([
+                'patrimonial_code' => $companyAsset->patrimonial_code,
+                'description' => $companyAsset->description ?? 'Sin descripción', // Ajusta según tu modelo
+                'location' => $companyAsset->office->name ?? 'Sin ubicación',
+                'status' => $companyAsset->asset_state->name ?? 'Sin estado',
+                'responsible' => $companyAsset->responsible_user_id ? $companyAsset->responsibleUser->name ?? 'Sin responsable' : 'Sin responsable',
+            ]);
+
             // Validación y creación del modelo específico según tipo
             switch ($assetTypeId) {
                 case 1: // HARDWARE
@@ -187,8 +197,6 @@ class CompanyAssetController extends Controller
                     $companyAsset->other()->create($otherData);
                     Log::info('Activo diverso creado para activo ID: ' . $companyAsset->id);
                     break;
-
-                    // Agrega más casos según necesites
             }
 
             DB::commit();
@@ -250,6 +258,15 @@ class CompanyAssetController extends Controller
             }
 
             $companyAsset->update(array_merge($request->validated(), ['photo_path' => $photoPath]));
+
+            // Generar QR code automáticamente (regenerar si se actualizan datos clave)
+            $companyAsset->generateQrCode([
+                'patrimonial_code' => $companyAsset->patrimonial_code,
+                'description' => $companyAsset->description ?? 'Sin descripción', // Ajusta según tu modelo
+                'location' => $companyAsset->office->name ?? 'Sin ubicación',
+                'status' => $companyAsset->asset_state->name ?? 'Sin estado',
+                'responsible' => $companyAsset->responsible_user_id ? $companyAsset->responsibleUser->name ?? 'Sin responsable' : 'Sin responsable',
+            ]);
 
             // Validación y actualización del modelo específico
             $assetTypeId = $companyAsset->asset_type_id;
@@ -348,6 +365,11 @@ class CompanyAssetController extends Controller
 
             if ($companyAsset->photo_path) {
                 Storage::delete(str_replace('/storage/', '', $companyAsset->photo_path));
+            }
+
+            // Eliminar QR si existe
+            if ($companyAsset->qr_code_path) {
+                Storage::delete(str_replace('/storage/', '', $companyAsset->qr_code_path));
             }
 
             // Eliminar modelo específico

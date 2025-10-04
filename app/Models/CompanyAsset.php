@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasQrCode;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -9,8 +10,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class CompanyAsset extends Model
 {
-    use HasFactory;
-    use SoftDeletes;
+    use HasFactory;     // Factory
+    use SoftDeletes;    // Soft deletes
+    use HasQrCode;      // Trait para generación de QR
 
     protected $fillable = [
         'patrimonial_code',
@@ -22,6 +24,7 @@ class CompanyAsset extends Model
         'acquisition_date',
         'inventory_date',
         'photo_path',
+        'qr_code_path', 
         'status'
     ];
 
