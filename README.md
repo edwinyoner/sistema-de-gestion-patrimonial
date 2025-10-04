@@ -1,66 +1,356 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 📋 Sistema de Gestión Patrimonial
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Sistema integral para la administración de activos, inventario y recursos patrimoniales desarrollado para instituciones públicas.
 
-## About Laravel
+![Laravel](https://img.shields.io/badge/Laravel-10.x-red)
+![PHP](https://img.shields.io/badge/PHP-8.2-blue)
+![License](https://img.shields.io/badge/License-Proprietary-yellow)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🏢 Desarrollado por
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+**Winner Systems Corporation S.A.C.**
+- **RUC:** 20613731335
+- **Website:** [www.winner-systems.com](https://www.winner-systems.com)
+- **Email:** info@winner-systems.com
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 📖 Descripción
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+Sistema web desarrollado con Laravel 10 que permite gestionar de manera eficiente el inventario patrimonial de instituciones públicas y privadas. Incluye control de activos, asignación de responsables, generación de reportes y trazabilidad completa de movimientos.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Características Principales
 
-## Laravel Sponsors
+- ✅ Gestión completa de activos patrimoniales
+- ✅ Control de usuarios con roles y permisos
+- ✅ Administración de oficinas y trabajadores
+- ✅ Inventario por categorías (Hardware, Software, Mobiliario, Maquinaria, Herramientas)
+- ✅ Sistema de reportes con exportación a PDF y Excel
+- ✅ Trazabilidad de movimientos y cambios
+- ✅ Interfaz moderna y responsiva
+- ✅ Sistema de manuales de usuario
+- ✅ Soporte técnico integrado
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+---
 
-### Premium Partners
+## 🛠️ Tecnologías Utilizadas
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### Backend
+- Laravel 10.x
+- PHP 8.2
+- MySQL 8.0
+- Jetstream (Autenticación)
+- Spatie Permissions (Roles y Permisos)
 
-## Contributing
+### Frontend
+- AdminLTE 3
+- Bootstrap 4
+- jQuery
+- DataTables
+- SweetAlert2
+- Font Awesome
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Librerías Principales
+- **barryvdh/laravel-dompdf** - Generación de PDFs
+- **maatwebsite/excel** - Exportación a Excel
+- **intervention/image** - Procesamiento de imágenes
+- **spatie/laravel-permission** - Sistema de permisos
 
-## Code of Conduct
+---
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## 📋 Requisitos del Sistema
 
-## Security Vulnerabilities
+### Requisitos Mínimos
+- PHP >= 8.2
+- Composer
+- MySQL >= 8.0 o MariaDB >= 10.3
+- Apache o Nginx
+- Extensiones PHP: GD, PDO, Mbstring, OpenSSL, Tokenizer, XML, Ctype, JSON
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Requisitos Recomendados
+- PHP 8.2+
+- MySQL 8.0+
+- 2GB RAM mínimo
+- 1GB espacio en disco
 
-## License
+---
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## 🚀 Instalación
+
+### 1. Clonar el repositorio
+```bash
+git clone [URL_DEL_REPOSITORIO]
+cd sistema-de-gestion-patrimonial
+```
+
+### 2. Instalar dependencias
+```bash
+composer install
+npm install && npm run build
+```
+
+### 3. Configurar el entorno
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+
+### 4. Configurar base de datos
+Editar el archivo `.env`:
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=nombre_base_datos
+DB_USERNAME=usuario
+DB_PASSWORD=contraseña
+```
+
+### 5. Ejecutar migraciones y seeders
+```bash
+php artisan migrate --seed
+```
+
+### 6. Crear enlace simbólico para storage
+```bash
+php artisan storage:link
+```
+
+### 7. Iniciar servidor de desarrollo
+```bash
+php artisan serve
+```
+
+Acceder a: `http://localhost:8000`
+
+---
+
+## 👤 Credenciales por Defecto
+
+```
+Usuario: admin@example.com
+Contraseña: password
+```
+
+**⚠️ IMPORTANTE:** Cambiar estas credenciales inmediatamente en producción.
+
+---
+
+## 📂 Estructura del Proyecto
+
+```
+sistema-de-gestion-patrimonial/
+├── app/
+│   ├── Http/Controllers/    # Controladores
+│   ├── Models/              # Modelos Eloquent
+│   ├── Exports/             # Clases de exportación
+│   └── Policies/            # Políticas de autorización
+├── database/
+│   ├── migrations/          # Migraciones de BD
+│   └── seeders/             # Seeders
+├── resources/
+│   └── views/
+│       └── modules/         # Vistas por módulo
+├── public/
+│   ├── assets/             # Assets públicos
+│   └── images/             # Imágenes y logos
+└── routes/
+    └── web.php             # Rutas de la aplicación
+```
+
+---
+
+## 🔐 Roles y Permisos
+
+### Roles Predefinidos
+
+| Rol | Descripción | Permisos |
+|-----|-------------|----------|
+| **Admin** | Administrador del sistema | Acceso total |
+| **Autoridad** | Personal autorizado | Visualización y reportes |
+| **Usuario** | Usuario estándar | Consulta básica |
+
+### Permisos Principales
+- Gestión de usuarios
+- Gestión de roles y permisos
+- CRUD de activos patrimoniales
+- Generación de reportes
+- Exportación de datos
+- Gestión de trabajadores y oficinas
+
+---
+
+## 📊 Módulos del Sistema
+
+### 1. Gestión de Accesos
+- Usuarios
+- Roles
+- Permisos
+
+### 2. Organización Interna
+- Oficinas
+- Cargos
+- Tipos de Contrato
+- Trabajadores
+
+### 3. Gestión de Activos
+- Tipos de Activos
+- Estados de Activos
+- Tipos de Software
+- Inventario General
+- Categorías específicas:
+  - Hardware
+  - Software
+  - Mobiliario
+  - Maquinaria
+  - Herramientas
+  - Otros Activos
+
+### 4. Reportes y Analíticas
+- Reportes de inventario
+- Exportación a PDF/Excel
+- Filtros personalizables
+- Vista previa de datos
+
+### 5. Documentación
+- Manual del usuario
+- Soporte técnico
+- Información del sistema
+
+---
+
+## 📈 Generación de Reportes
+
+El sistema incluye un generador de reportes completo:
+
+```bash
+# Acceder a reportes
+/reports
+```
+
+### Tipos de Reportes Disponibles
+- Mobiliarios
+- Hardware
+- Maquinarias
+- Software
+- Herramientas
+- Activos Generales
+- Trabajadores
+- Usuarios
+- Oficinas
+- Cargos
+- Tipos de Contrato
+
+### Formatos de Exportación
+- PDF (con logo y branding institucional)
+- Excel (XLSX)
+- Vista previa en pantalla
+
+---
+
+## 🔧 Configuración Adicional
+
+### Configurar Logo Institucional
+Colocar el logo en: `public/assets/images/logo.png`
+
+### Personalizar Datos de la Empresa
+Editar `ReportController.php`, método `getCompanyData()`:
+```php
+return [
+    'name' => 'Tu Institución',
+    'ruc' => 'Tu RUC',
+    'address' => 'Tu dirección',
+    // ...
+];
+```
+
+### Configurar Email
+En `.env`:
+```env
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USERNAME=tu-email@gmail.com
+MAIL_PASSWORD=tu-contraseña
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS=tu-email@gmail.com
+MAIL_FROM_NAME="${APP_NAME}"
+```
+
+---
+
+## 🐛 Solución de Problemas Comunes
+
+### Error: "Class not found"
+```bash
+composer dump-autoload
+```
+
+### Error: "Permission denied" en storage
+```bash
+chmod -R 775 storage bootstrap/cache
+```
+
+### Extensión GD no instalada (para PDFs con logo)
+```bash
+# Windows (XAMPP): descomentar en php.ini
+extension=gd
+
+# Linux
+sudo apt-get install php8.2-gd
+```
+
+### Limpiar caché
+```bash
+php artisan config:clear
+php artisan cache:clear
+php artisan view:clear
+php artisan route:clear
+```
+
+---
+
+## 📝 Changelog
+
+### Versión 1.0.0 (2025-09-17)
+- ✨ Lanzamiento inicial del sistema
+- ✨ Gestión completa de activos patrimoniales
+- ✨ Sistema de usuarios, roles y permisos
+- ✨ Módulo de reportes con exportación
+- ✨ Interfaz responsive con AdminLTE
+
+---
+
+## 🤝 Soporte y Contacto
+
+### Winner Systems Corporation S.A.C.
+- **Web:** [www.winner-systems.com](https://www.winner-systems.com)
+- **Email Soporte:** soporte@winner-systems.com
+- **Email Comercial:** ventas@winner-systems.com
+- **WhatsApp:** +51 931-741-355
+
+### Horarios de Atención
+- Lunes a Viernes: 8:00 AM - 6:00 PM
+- Sábados: 9:00 AM - 1:00 PM
+
+---
+
+## 📄 Licencia
+
+Copyright © 2025 Winner Systems Corporation S.A.C.
+
+Este software es propiedad de Winner Systems Corporation S.A.C. (RUC: 20613731335). 
+Todos los derechos reservados.
+
+El uso, copia, modificación o distribución no autorizada de este software está 
+estrictamente prohibido y puede resultar en acciones legales.
+
+---
+
+## Desarrollado por Winner Systems
+
+**Transformación Digital para Municipalidades**
+
+Bolognesi, Ancash - Perú
