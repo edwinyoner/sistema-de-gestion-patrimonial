@@ -118,42 +118,56 @@
 
                             {{-- Select de Rol con restricciones --}}
                             @can('gestionar roles de usuarios')
-                                <x-adminlte-select name="role" label="Rol" label-class="text-warning" required>
-                                    <x-slot name="prependSlot">
-                                        <div class="input-group-text bg-warning">
-                                            <i class="fas fa-users-cog text-white"></i>
+                                @if (auth()->user()->id === $user->id && auth()->user()->hasRole('Admin'))
+                                    <input type="hidden" name="role" value="Admin">
+                                    <div class="form-group">
+                                        <label class="text-warning">Rol</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text bg-warning">
+                                                    <i class="fas fa-users-cog text-white"></i>
+                                                </div>
+                                            </div>
+                                            <input type="text" class="form-control" value="Admin" readonly>
                                         </div>
-                                    </x-slot>
-                                    <option value="" disabled>Seleccione un rol</option>
-                                    @foreach ($roles as $role)
-                                        {{-- Admin puede asignar cualquier rol --}}
-                                        @if (auth()->user()->hasRole('Admin'))
-                                            <option value="{{ $role->name }}" 
-                                                {{ (old('role') ?? $user->roles->first()?->name) == $role->name ? 'selected' : '' }}>
-                                                {{ $role->name }}
-                                            </option>
-                                        {{-- Autoridad: restricciones específicas --}}
-                                        @elseif (auth()->user()->hasRole('Autoridad'))
-                                            {{-- No puede asignar rol Admin --}}
-                                            @if ($role->name !== 'Admin')
+                                        <small class="text-muted">
+                                            <i class="fas fa-info-circle"></i>
+                                            Como Admin, no puedes cambiar tu propio rol por seguridad.
+                                        </small>
+                                    </div>
+                                @else
+                                    <x-adminlte-select name="role" label="Rol" label-class="text-warning" required>
+                                        <x-slot name="prependSlot">
+                                            <div class="input-group-text bg-warning">
+                                                <i class="fas fa-users-cog text-white"></i>
+                                            </div>
+                                        </x-slot>
+                                        <option value="" disabled>Seleccione un rol</option>
+                                        @foreach ($roles as $role)
+                                            @if (auth()->user()->hasRole('Admin'))
                                                 <option value="{{ $role->name }}" 
                                                     {{ (old('role') ?? $user->roles->first()?->name) == $role->name ? 'selected' : '' }}>
                                                     {{ $role->name }}
                                                 </option>
+                                            @elseif (auth()->user()->hasRole('Autoridad'))
+                                                @if ($role->name !== 'Admin')
+                                                    <option value="{{ $role->name }}" 
+                                                        {{ (old('role') ?? $user->roles->first()?->name) == $role->name ? 'selected' : '' }}>
+                                                        {{ $role->name }}
+                                                    </option>
+                                                @endif
                                             @endif
-                                        @endif
-                                    @endforeach
-                                </x-adminlte-select>
-                                
-                                {{-- Mensaje informativo para Autoridad --}}
-                                @if (auth()->user()->hasRole('Autoridad'))
-                                    <small class="text-muted">
-                                        <i class="fas fa-info-circle"></i>
-                                        Como Autoridad, no puedes asignar rol de Administrador.
-                                    </small>
+                                        @endforeach
+                                    </x-adminlte-select>
+
+                                    @if (auth()->user()->hasRole('Autoridad'))
+                                        <small class="text-muted">
+                                            <i class="fas fa-info-circle"></i>
+                                            Como Autoridad, no puedes asignar rol de Administrador.
+                                        </small>
+                                    @endif
                                 @endif
                             @else
-                                {{-- Si no puede gestionar roles, mantener el rol actual --}}
                                 <input type="hidden" name="role" value="{{ $user->roles->first()?->name ?? 'Usuario' }}">
                                 <div class="form-group">
                                     <label class="text-warning">Rol</label>
@@ -177,7 +191,10 @@
                                     <div class="toggle-container">
                                         <div class="toggle-wrap">
                                             <input type="hidden" name="status" id="status-value" value="{{ old('status', $user->status) ? 1 : 0 }}">
-                                            <input class="toggle-input" id="holo-toggle" type="checkbox" {{ old('status', $user->status) ? 'checked' : '' }} onchange="document.getElementById('status-value').value = this.checked ? 1 : 0;">
+                                            <input class="toggle-input" id="holo-toggle" type="checkbox" 
+                                                {{ old('status', $user->status) ? 'checked' : '' }} 
+                                                @if(auth()->user()->id === $user->id && auth()->user()->hasRole('Admin')) disabled @endif
+                                                onchange="document.getElementById('status-value').value = this.checked ? 1 : 0;">
                                             <label class="toggle-track" for="holo-toggle">
                                                 <div class="track-lines">
                                                     <div class="track-line"></div>
@@ -224,7 +241,7 @@
                                     </small>
                                 </div>
                             @else
-                                {{-- Mostrar estado actual sin poder editarlo --}}
+                                <!-- Mostrar estado actual sin poder editarlo -->
                                 <input type="hidden" name="status" value="{{ $user->status ? 1 : 0 }}">
                                 <div class="form-group">
                                     <label class="text-warning">Estado</label>

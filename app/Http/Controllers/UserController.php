@@ -69,31 +69,45 @@ class UserController extends Controller
     public function update(UserRequest $request, User $user)
     {
         try {
-            $user->update([
-                'name' => $request->name,
-                'email' => $request->email,
-                'status' => $request->status,
-            ]);
+            // Validar los datos del request
+            $validatedData = $request->validated();
 
-            if ($request->has('role')) {
-                $user->syncRoles([$request->role]);
+            // Si el usuario autenticado es Admin y está editando su propio perfil
+            if (auth()->user()->id === $user->id && auth()->user()->hasRole('Admin')) {
+                // No permitir cambios en el rol, mantenerlo como Admin
+                $user->syncRoles(['Admin']);
+            } else {
+                // Para otros usuarios (incluyendo Autoridad editando otros)
+                if ($request->has('role')) {
+                    // Verificar permisos del usuario autenticado
+                    if (auth()->user()->hasRole('Autoridad') && $request->role === 'Admin') {
+                        return response()->json(['success' => false, 'message' => 'No tienes permiso para asignar el rol Admin.'], 403);
+                    }
+                    $user->syncRoles([$request->role]);
+                }
             }
 
-            // Si es una petición AJAX, devolver JSON
+            // Actualizar los datos del usuario
+            $user->update([
+                'name' => $validatedData['name'],
+                'email' => $validatedData['email'],
+                'status' => $validatedData['status'] ?? true,
+            ]);
+
+            // Respuesta según el tipo de petición
             if ($request->expectsJson()) {
                 return response()->json(['success' => true, 'message' => 'Usuario actualizado correctamente']);
             }
 
             return redirect()->route('users.index')->with('success', 'Usuario actualizado');
         } catch (\Exception $e) {
+            Log::error('Error al actualizar usuario: ' . $e->getMessage());
             if ($request->expectsJson()) {
                 return response()->json(['success' => false, 'message' => 'Error al actualizar el usuario'], 500);
             }
-            
             return redirect()->back()->with('error', 'Error al actualizar el usuario');
         }
     }
-
     public function destroy(User $user)
     {
         $user->delete();
@@ -113,7 +127,7 @@ class UserController extends Controller
         if ($user) {
             // Generar URL de verificación de email
             $verificationUrl = $this->generateVerificationUrl($user);
-            
+
             // Enviar el correo unificado (credenciales + verificación)
             \Illuminate\Support\Facades\Mail::to($user->email)->send(
                 new \App\Mail\NewUserCredentials($user, $request->password, $request->login_url, $verificationUrl)
@@ -137,7 +151,7 @@ class UserController extends Controller
 
         try {
             $user = User::findOrFail($request->user_id);
-            
+
             // Actualizar la contraseña del usuario
             $user->update([
                 'password' => Hash::make($request->password),
@@ -152,13 +166,13 @@ class UserController extends Controller
             );
 
             return response()->json([
-                'success' => true, 
+                'success' => true,
                 'message' => 'Contraseña actualizada y credenciales enviadas con éxito'
             ]);
         } catch (\Exception $e) {
             Log::error('Error en updatePasswordAndSend: ' . $e->getMessage());
             return response()->json([
-                'success' => false, 
+                'success' => false,
                 'error' => 'Error al actualizar contraseña y enviar credenciales: ' . $e->getMessage()
             ], 500);
         }

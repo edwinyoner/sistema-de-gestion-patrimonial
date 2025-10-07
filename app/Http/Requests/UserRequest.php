@@ -13,7 +13,7 @@ class UserRequest extends FormRequest
     public function authorize(): bool
     {
         // Autoriza solo a usuarios con rol 'admin' (ajusta según tu lógica de permisos)
-        return true;//auth()->check() && auth()->user()->hasRole('admin');
+        return true; //auth()->check() && auth()->user()->hasRole('admin');
     }
 
     /**
@@ -49,7 +49,7 @@ class UserRequest extends FormRequest
 
         if ($this->isMethod('put')) {
             $userId = $this->route('user') ? $this->route('user')->id : null;
-            return [
+            $rules = [
                 'name' => [
                     'required',
                     'string',
@@ -63,13 +63,15 @@ class UserRequest extends FormRequest
                     'max:255',
                     'unique:users,email,' . $userId,
                 ],
-                'role' => [
-                    'required',
-                    'string',
-                    'exists:roles,name',
-                ],
                 'status' => 'boolean',
             ];
+
+            // Solo requerir role si no es el propio Admin editándose
+            if (!($this->user && auth()->check() && auth()->user()->id === $this->user->id && auth()->user()->hasRole('Admin'))) {
+                $rules['role'] = 'sometimes|string|exists:roles,name';
+            }
+
+            return $rules;
         }
 
         return [];
