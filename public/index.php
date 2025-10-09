@@ -6,6 +6,15 @@ use Illuminate\Http\Request;
 define('LARAVEL_START', microtime(true));
 
 /*
+@Author: Edwin Yoner
+@Date: 2025-09-11
+Muestra todos los errores en el entorno de desarrollo
+*/
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
+
+/*
 |--------------------------------------------------------------------------
 | Check If The Application Is Under Maintenance
 |--------------------------------------------------------------------------
