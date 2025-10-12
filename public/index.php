@@ -7,7 +7,7 @@ define('LARAVEL_START', microtime(true));
 
 /*
 @Author: Edwin Yoner
-@Date: 2025-09-11
+@Date: 2025-10-08
 Muestra todos los errores en el entorno de desarrollo
 */
 ini_set('display_errors', '1');
