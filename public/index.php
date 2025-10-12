@@ -8,7 +8,7 @@ define('LARAVEL_START', microtime(true));
 /*
 @Author: Edwin Yoner
 @Date: 2025-10-08
-Muestra todos los errores en el entorno de desarrollo
+@Change: Muestra todos los errores en el entorno de producción para facilitar la depuración.
 */
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
